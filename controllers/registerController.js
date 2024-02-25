@@ -1,32 +1,48 @@
-const usersDB = {
-    users: require('../model/users.json'),
-    setUsers: function (data) { this.users = data }
-}
-const fsPromises = require('fs').promises;
-const path = require('path');
 const bcrypt = require('bcrypt');
+const user = require('../model/user.js');
+const client = require('../databasepg.js');
+
+
+client.connect()
+    .then(() => console.log('Connected to PostgreSQL'))
+    .catch(err => console.error('Connection error', err.stack));
 
 const handleNewUser = async (req, res) => {
-    const { user, pwd } = req.body;
-    if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
-    // check for duplicate usernames in the db
-    const duplicate = usersDB.users.find(person => person.username === user);
-    if (duplicate) return res.sendStatus(409); //Conflict 
     try {
-        //encrypt the password
-        const hashedPwd = await bcrypt.hash(pwd, 10);
-        //store the new user
-        const newUser = { "username": user, "password": hashedPwd };
-        usersDB.setUsers([...usersDB.users, newUser]);
-        await fsPromises.writeFile(
-            path.join(__dirname, '..', 'model', 'users.json'),
-            JSON.stringify(usersDB.users)
+        const {
+            email,
+            password,
+            firstName,
+            lastName,
+            designation
+        } = req.body;
+
+        
+        if (!email || !password || !firstName || !lastName || !designation) {
+            return res.status(400).json({ 'message': 'All fields are required' });
+        }
+
+        
+        const duplicate = await client.query('SELECT * FROM public.users WHERE email = $1', [email]);
+        if (duplicate.rows.length > 0) {
+            return res.sendStatus(409); // Conflict
+        }
+
+     
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+       
+        await client.query(
+            `INSERT INTO public.users (email, hashedpassword, firstname, lastname, designation)
+             VALUES ($1, $2, $3, $4, $5)`,
+            [email, hashedPassword, firstName, lastName, designation]
         );
-        console.log(usersDB.users);
-        res.status(201).json({ 'success': `New user ${user} created!` });
+
+        res.status(201).json({ 'success': `New user ${email} created!` });
     } catch (err) {
+        console.error(err);
         res.status(500).json({ 'message': err.message });
     }
-}
+};
 
 module.exports = { handleNewUser };
