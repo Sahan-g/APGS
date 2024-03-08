@@ -17,7 +17,7 @@ const handleLogin = async (req, res) => {
     if (!userName || ! passWord) return res.status(400).json({ 'message': 'Username and password are required.' });
 
 
-    const foundUsers = await client.query('SELECT email, hashedpassword FROM public.users WHERE email = $1', [userName]);
+    const foundUsers = await client.query('SELECT email, hashedpassword, isadmin FROM public.users WHERE email = $1', [userName]);
     const foundUser=foundUsers.rows[0];
    
 
@@ -30,8 +30,20 @@ const handleLogin = async (req, res) => {
         
     if (match) {
         
+       
+        var role;
+        if(foundUser.isadmin){
+            role='1'
+        }else role='0';
+        
         const accessToken = jwt.sign(
-            { "username": foundUser.email },
+            
+            {
+               "Userinfo": { "username": foundUser.email 
+               ,"role":role
+               
+            }
+            },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: '5m' }
         );
@@ -45,10 +57,9 @@ const handleLogin = async (req, res) => {
         //client.query(`INSERT into public.tokens (email,refreshtoken) VALUES ($1,$2)`,[userName,refreshToken])
             
 
-        // First, check if the email exists in the table
 client.query('SELECT * FROM public.tokens WHERE email = $1', [userName], (err, result) => {
     if (err) {
-        // Handle error
+       
         console.error('Error executing SELECT query:', err);
         return;
     }
