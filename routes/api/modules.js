@@ -7,9 +7,9 @@ const verifyRole = require('../../middleware/verifyRoles')
 router.get('/',verifyRole(Roles_list.RolesList.user.toString()),modulesController.getModules );
 router.post('/',verifyRole(Roles_list.RolesList.user.toString()),modulesController.AddModule)
 //router.get('/:modulecode',verifyRole(Roles_list.RolesList.user.toString()),modulesController.GetModule)
-router.route('/:modulecode').get(verifyRole(Roles_list.RolesList.user.toString()),modulesController.GetModule)
-
-
+router.route('/view/:modulecode').get(verifyRole(Roles_list.RolesList.user.toString()),modulesController.GetModule)
+router.route('/edit/:modulecode').post(verifyRole(Roles_list.RolesList.user.toString()),modulesController.EditModule)
+router.route('/delete/:modulecode').delete(verifyRole(Roles_list.RolesList.user.toString()),modulesController.DeleteModule)
 
 
 module.exports = router;
