@@ -8,6 +8,7 @@ const errorHandler = require('./middleware/errorHandler');
 const verifyJWT = require('./middleware/verifyJWT');
 const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
+const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3500;
 
 // custom middleware logger
@@ -21,18 +22,19 @@ app.use(credentials);
 app.use(cors(corsOptions));
 
 // built-in middleware to handle urlencoded form data
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // built-in middleware for json 
 app.use(express.json());
+app.use(bodyParser.json())
 
-//middleware for cookies
+
 app.use(cookieParser());
 
 //serve static files
 app.use('/', express.static(path.join(__dirname, '/public')));
 
-// routes
+
 app.use('/', require('./routes/root'));
 app.use('/register', require('./routes/register'));
 app.use('/auth', require('./routes/auth'));
@@ -43,6 +45,8 @@ app.use('/logout', require('./routes/logout'));
 app.use(verifyJWT);
 
 app.use('/modules',require('./routes/api/modules'))
+app.use('/user',require('./routes/api/user'))
+app.use('/batch',require('./routes/api/batch'))
 
 
 app.all('*', (req, res) => {

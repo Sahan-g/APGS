@@ -15,11 +15,15 @@ const getModules =async  (req,res)=>{
 }
 
 const AddModule =async (req,res)=>{
-    const {modulecode,modulename,credits} = req.body.toUpperCase();
+    var {modulecode,modulename,credits} = req.body;
 
     if(!modulecode) res.status(400).json('Module Code is Required');
     if(!modulename) res.status(400).json('Module Name is Required');
     if(!credits) res.status(400).json('Credits is Required');
+    
+
+    modulecode= modulecode.toUpperCase();
+    modulename= modulecode.toUpperCase();
     
     
     const result = await client.query('SELECT COUNT(*) FROM modules WHERE modulecode = $1', [modulecode]);
