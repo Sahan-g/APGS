@@ -254,3 +254,13 @@
 20240309	03:10:33	daa081c0-753a-4440-bfc7-2d510c7be83a	GET	undefined	/modules/:modulecode
 20240309	03:11:58	c4937aad-4aaa-4297-bedf-eeb6dddcfa84	POST	undefined	/auth
 20240309	03:12:09	e3652390-2bb2-4166-9e58-bf17e721008d	GET	undefined	/modules/:modulecode=EE3010
+20240310	10:48:38	bb85f683-ddcb-4691-9615-747bbbe65704	POST	undefined	/register?email=nimal@gmail.com&password=nim123ASD!@%23
+20240310	10:51:02	25d63776-ba90-4c6e-8533-778b06f65915	POST	undefined	/register
+20240310	10:54:12	4fee048f-27b1-4676-9c2c-342a9ddbb7f2	POST	undefined	/register?email=nim@gmail.com&password=nim1234SDF@$&firstName=nim&lastName=wf&designation=lec
+20240310	10:54:14	ad8278c3-a76c-426d-8d62-9c14a8d06cbd	POST	undefined	/register?email=nim@gmail.com&password=nim1234SDF@$&firstName=nim&lastName=wf&designation=lec
+20240310	10:54:15	0939fbaf-7321-4f05-8cda-4b1bbd606e5a	POST	undefined	/register?email=nim@gmail.com&password=nim1234SDF@$&firstName=nim&lastName=wf&designation=lec
+20240310	11:04:05	195a1a82-7e55-4ff6-9935-9ff0d049453d	POST	undefined	/register
+20240310	11:05:38	8d3bc235-fdd5-40ff-a094-ecae69857e5b	POST	undefined	/register
+20240310	11:05:49	3598322f-21ee-496c-b038-411d5e7aba1a	POST	undefined	/register
+20240310	11:06:30	58ea0c85-23f8-436e-ae5d-aa73f272cace	POST	undefined	/register
+20240310	11:08:35	9d259eda-be90-4a80-b114-9ee1ac953cdf	POST	undefined	/register
