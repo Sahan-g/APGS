@@ -382,3 +382,4 @@
 20240310	02:48:01	ac50ffe5-3cfd-44d5-a6d6-47b563042e9c	POST	undefined	/batch/EE2010
 20240310	02:48:29	1f453cba-82e8-40f0-ae32-46947e0ba30f	POST	undefined	/batch/EE2010
 20240310	02:48:59	594f9c01-5e32-4c51-82f3-7f373c2db9ea	GET	undefined	/batch/EE2010
+20240310	11:06:27	7287ec29-7b2a-4020-a2a0-e3be0e4829d9	POST	undefined	/register

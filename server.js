@@ -11,7 +11,7 @@ const credentials = require('./middleware/credentials');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3500;
 
-// custom middleware logger
+
 app.use(logger);
 
 // Handle options credentials check - before CORS!
@@ -22,11 +22,11 @@ app.use(credentials);
 app.use(cors(corsOptions));
 
 // built-in middleware to handle urlencoded form data
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
 // built-in middleware for json 
 app.use(express.json());
-app.use(bodyParser.json())
+
 
 
 app.use(cookieParser());

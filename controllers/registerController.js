@@ -15,7 +15,6 @@ const handleNewUser = async (req, res) => {
             firstName,
             lastName,
             designation,
-            
         } = req.body;
         
         
