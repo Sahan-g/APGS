@@ -7,8 +7,8 @@ const getuser=async (req,res)=>{
 
    const user= (await client.query('SELECT firstname,lastname,email,isadmin,designation,profilepic,mimetype   from users where email = $1',[req.user])).rows[0]
    
-    const image = {"image":user.profilepic,
-                    "mimetype":user.mimetype
+   const image = {"image":user.profilepic,
+   "mimetype":user.mimetype
     }
 
 
@@ -59,11 +59,6 @@ const editUser= async (req,res)=>{
 const AddProfilePicture=async( req,res)=>{
     const user= req.user;
     const image= req.file;
-
-    console.log(image.mimetype)
-    
-
-
 
     
     if(image){

@@ -467,3 +467,9 @@
 20240312	01:25:46	9c2c6dde-3fa2-417d-9cbc-c6cc9a9ce665	GET	undefined	/user/
 20240312	17:56:41	0a9f72d6-bcb3-4169-8db1-041c98fdabfb	POST	undefined	/auth
 20240312	17:57:04	60e44c28-18ef-423f-98eb-9b5ca11fd328	GET	undefined	/user/
+20240312	19:17:03	5d61cd08-8c93-4d62-b6ce-e4bb57e348fb	POST	undefined	/register
+20240312	19:19:47	0047cd22-27fe-46cc-b3ee-5d64f525533a	POST	undefined	/register
+20240312	19:20:06	6b88b355-d9ab-4ad1-925d-c2ece35b6a9c	POST	undefined	/register
+20240312	19:20:24	14cb6cb8-a4c5-44ed-820c-f55e5c71543f	POST	undefined	/register
+20240312	19:22:45	f6e15f1c-1601-4807-bc47-d96fad59bce0	POST	undefined	/register
+20240312	19:24:20	66c9e0c9-63f1-4bab-9eaf-6a0de7fc4d58	POST	undefined	/register
