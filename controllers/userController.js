@@ -5,8 +5,24 @@ const bcrypt= require('bcrypt')
 
 const getuser=async (req,res)=>{
 
-   const user= (await client.query('SELECT firstname,lastname,email,isadmin,designation from users where email = $1',[req.user])).rows[0]
-    return res.status(200).json(user);
+   const user= (await client.query('SELECT firstname,lastname,email,isadmin,designation,profilepic,mimetype   from users where email = $1',[req.user])).rows[0]
+   
+    const image = {"image":user.profilepic,
+                    "mimetype":user.mimetype
+    }
+
+
+   const response={
+    "firstname":user.firstname,
+    "lastname":user.lastname,
+    "email":user.email,
+    "isAdmin":user.isadmin,
+    "designation":user.designation,
+    "profilepic":image
+   }
+   
+   
+   return res.status(200).json(response);
 
 }
 
@@ -23,7 +39,7 @@ const editUser= async (req,res)=>{
     if (!email || !password || !firstName || !lastName || !designation) {
             return res.status(400).json({ 'message': 'All fields are required' });
     }
-    console.log(emailprev +"  "+ email)
+    
     if(emailprev==email){
         
         await client.query('UPDATE users SET firstname=$1, lastname=$2, hashedpassword=$3, designation=$4, isadmin=$5 WHERE email=$6', [firstName, lastName, hash, designation, role, email]);
@@ -35,10 +51,31 @@ const editUser= async (req,res)=>{
         return res.status(201).send("Successful");
     }
 
-
+    
     
 
 }
 
+const AddProfilePicture=async( req,res)=>{
+    const user= req.user;
+    const image= req.file;
 
-module.exports={getuser,editUser};
+    console.log(image.mimetype)
+    
+
+
+
+    
+    if(image){
+
+        await client.query('UPDATE users SET profilepic = $1, mimetype = $2 WHERE email = $3',[image.buffer,image.mimetype,user])
+        return res.status(201).json('Profile Picture added')
+
+    }
+    await client.query("UPDATE users SET profilepic=null WHERE email=$1", [user]);
+    return res.status(201).json('Profile Picture removed');
+
+}
+
+
+module.exports={getuser,editUser,AddProfilePicture};
