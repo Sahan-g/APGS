@@ -14,6 +14,8 @@ const user = require('../model/user.js')
 const handleLogin = async (req, res) => {
 
     const { userName, passWord } = req.body;
+    
+    
     if (!userName || ! passWord) return res.status(400).json({ 'message': 'Username and password are required.' });
 
 
@@ -45,7 +47,7 @@ const handleLogin = async (req, res) => {
             }
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '5m' }
+            { expiresIn: '20m' }
         );
         const refreshToken = jwt.sign(
             { "username": foundUser.email },

@@ -14,15 +14,12 @@ const handleNewUser = async (req, res) => {
             password,
             firstName,
             lastName,
-            designation
+            designation,
+            image
         } = req.body;
-
-        console.log('Received request with the following data:');
-        console.log('Email:', email);
-        console.log('Password:', password);
-        console.log('First Name:', firstName);
-        console.log('Last Name:', lastName);
-        console.log('Designation:', designation);
+        console.log(req.body)
+        
+    
         
         if (!email || !password || !firstName || !lastName || !designation) {
             return res.status(400).json({ 'message': 'All fields are required' });
