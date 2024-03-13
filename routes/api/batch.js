@@ -10,6 +10,4 @@ router.get('/:modulecode',verifyRole(Roles_list.RolesList.user.toString()),uploa
 router.post('/:modulecode',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),batchController.AddBatch)
 
 
-
-
-module.exports=router;
+module.exports= router;

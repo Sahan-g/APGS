@@ -17,7 +17,7 @@ const handleNewUser = async (req, res) => {
             designation,
             image
         } = req.body;
-        console.log(req.body)
+        
         
     
         

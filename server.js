@@ -57,7 +57,7 @@ app.use(verifyJWT);
 app.use('/modules',require('./routes/api/modules'))
 app.use('/user',require('./routes/api/user'))
 app.use('/batch',require('./routes/api/batch'))
-
+app.use('/assignment',require('./routes/api/assignment'))
 
 app.all('*', (req, res) => {
     res.status(404);
