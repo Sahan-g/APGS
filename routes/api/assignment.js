@@ -7,7 +7,7 @@ const upload= require('../../config/multer')
 
 
 
-router.get('/:modulecode/:batch',upload.none(),assignmentController.getAssignments)
+router.get('/:modulecode/:batch',assignmentController.getAssignments)
 
 
 
