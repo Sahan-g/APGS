@@ -1,11 +1,13 @@
 
+const cors = require("cors");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const fsPromises = require('fs').promises;
 const path = require('path');
 const client = require('../databasepg.js');
-const user = require('../model/user.js')
+const user = require('../model/user.js');
+const Cookies = require('js-cookie');
 
 
 
@@ -15,13 +17,13 @@ const handleLogin = async (req, res) => {
 
     const { userName, passWord } = req.body;
     
-    
     if (!userName || ! passWord) return res.status(400).json({ 'message': 'Username and password are required.' });
 
-
+    console.log(typeof(userName))
+    
     const foundUsers = await client.query('SELECT email, hashedpassword, isadmin FROM public.users WHERE email = $1', [userName]);
     const foundUser=foundUsers.rows[0];
-   
+    console.log(foundUser)
 
         if (foundUsers.rows.length === 0) {
             return res.sendStatus(401); // Unauthorized
@@ -47,13 +49,20 @@ const handleLogin = async (req, res) => {
             }
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '20m' }
-        );
+            { expiresIn: '60s' }
+        )
         const refreshToken = jwt.sign(
             { "username": foundUser.email },
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: '1d' }
-        );
+        )
+        // localStorage.setItem('accessToken', accessToken);
+        // res.cookie('accessToken', accessToken, {maxAge: 60000})
+        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 })
+        // localStorage.setItem('accessToken', accessToken);
+        res.json({ accessToken });
+        // Cookies.set('accessToken', accessToken, { expires: 7, secure: true });
+        // Cookies.set('refreshToken', refreshToken, { expires: 7, secure: true });
         
 
         //client.query(`INSERT into public.tokens (email,refreshtoken) VALUES ($1,$2)`,[userName,refreshToken])
@@ -99,9 +108,7 @@ client.query('SELECT * FROM public.tokens WHERE email = $1', [userName], (err, r
 }
 
 
-
-        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
-        res.json({ accessToken });
+        
     } else {
         res.sendStatus(401);
     }
