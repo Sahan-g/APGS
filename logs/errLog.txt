@@ -66,8 +66,5 @@
 20240309	02:20:51	5e06e4ea-6aed-4219-9aec-63c5dd8e1152	TypeError: Cannot read properties of undefined (reading 'username')
 20240309	02:22:49	905b4a6a-9a75-48be-b2e2-26bc78ff5e0b	TypeError: Cannot read properties of undefined (reading 'username')
 20240309	02:24:30	a34f97be-9681-4ece-b44c-6dbb49452e2a	TypeError: Cannot read properties of undefined (reading 'username')
-20240312	00:19:54	35b0f5b2-5f36-436a-a99e-caf1ce854bfd	MulterError: Unexpected field
-20240312	00:20:12	501d8d1e-926b-45db-b8fa-21ec35fb0433	MulterError: Unexpected field
-20240312	00:20:52	f6d35cee-8566-4cf6-801e-690d73977cc9	MulterError: Unexpected field
-20240312	01:16:24	b52eb017-3449-4f2e-b8e6-3144b17cee1c	TypeError: Cannot read properties of undefined (reading 'username')
-20240312	01:16:47	2af50823-1284-4607-b51e-2c40a7df5cc8	TypeError: Cannot read properties of undefined (reading 'username')
+20240310	11:05:38	989692a7-3fe4-4b55-b7c7-fdddec6063b6	SyntaxError: Unexpected token 
+ in JSON at position 30

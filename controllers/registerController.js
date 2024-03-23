@@ -15,7 +15,7 @@ const handleNewUser = async (req, res) => {
             firstName,
             lastName,
             designation,
-            image
+            
         } = req.body;
         
         
@@ -24,6 +24,8 @@ const handleNewUser = async (req, res) => {
         if (!email || !password || !firstName || !lastName || !designation) {
             return res.status(400).json({ 'message': 'All fields are required' });
         }
+
+        // await client.connect();
 
         
         const duplicate = await client.query('SELECT * FROM public.users WHERE email = $1', [email]);
@@ -35,7 +37,9 @@ const handleNewUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
        
-        await client.query(
+        
+
+        client.query(
             `INSERT INTO public.users (email, hashedpassword, firstname, lastname, designation)
              VALUES ($1, $2, $3, $4, $5)`,
             [email, hashedPassword, firstName, lastName, designation]
