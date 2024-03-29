@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 const cloudinary= require('cloudinary')
 const cloudinaryConfig=require('./config/cloudinary')
 const PORT = process.env.PORT || 3500;
-const upload = require('./config/multer')
+const upload = require('./config/multer');
 
 
 const app = express();
@@ -43,6 +43,8 @@ cloudinary.config({
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET
 })
+
+
 
 
 app.use('/' ,require('./routes/root'));
