@@ -106,9 +106,10 @@ const Update =async (req,res)=>{
     try{
 
         const {id, modulecode,batch} = req.params;
-        console.log(req.params);
-    
-        return res.status(200).json('ok');
+        const title = req.body.title;
+
+        await client.query('UPDATE assignments assignmenttitle= $1 where modulecode = $2 batch=$3 assignmentid=$4',[title,modulecode,batch,id])
+        return res.status(200).json('successful');
     }
     catch (e){
         console.log(e);
