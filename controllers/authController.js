@@ -16,6 +16,7 @@ const handleLogin = async (req, res) => {
     const { userName, passWord } = req.body;
     
     
+    
     if (!userName || ! passWord) return res.status(400).json({ 'message': 'Username and password are required.' });
 
     console.log(typeof(userName))

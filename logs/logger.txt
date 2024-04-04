@@ -604,3 +604,9 @@
 20240329	06:44:33	1f087071-817f-4cf7-a2a3-ea211bf0ff3a	POST	undefined	/auth
 20240329	06:45:15	852d5ee5-2cdd-4fac-b7dc-5ea667a7fa1b	PUT	undefined	/assignment/EE2010/23/scheme/11
 20240329	06:45:54	de0f9413-ebab-43dd-b752-9cdaef9f9e65	PUT	undefined	/assignment/EE2010/23/scheme/11
+20240401	11:04:05	1b25272c-a24b-4a76-9842-2d2725eb6d4e	POST	undefined	/auth
+20240401	11:04:16	7e28495b-a5fb-4126-96cb-4a57fee8683b	POST	undefined	/auth
+20240401	11:06:01	6fb38358-7cac-4252-b51d-4c3668985abc	POST	undefined	/auth
+20240401	11:06:55	8c2898b6-1ccd-412d-b482-574eaed67b57	POST	undefined	/auth
+20240401	11:07:17	bddab335-d3ca-4448-bd6d-86c18d28a69d	POST	undefined	/register
+20240401	11:07:34	373134c3-5ba9-454f-8e98-11d1811b5e78	POST	undefined	/auth
