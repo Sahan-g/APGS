@@ -8,7 +8,9 @@ const upload= require('../../config/multer')
 
 
 router.get('/:modulecode/:batch',assignmentController.getAssignments)
-
+router.post('/:modulecode/:batch',upload.single('scheme'),assignmentController.HandleNewAssignment)
+router.put('/:modulecode/:batch/scheme/:id',upload.single('scheme'),assignmentController.ChangeScheme)
+router.put('/:modulecode/:batch/:id',upload.none(),assignmentController.Update)
 
 
 module.exports= router;
