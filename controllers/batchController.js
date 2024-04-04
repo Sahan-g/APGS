@@ -1,26 +1,27 @@
-const client = require('../databasepg.js');
+const client = require("../databasepg.js");
 
+const GetBatches = async (req, res) => {
+  const modulecode = req.params.modulecode;
+  const result = (
+    await client.query("SELECT * FROM batch where modulecode =$1", [modulecode])
+  ).rows;
 
-const GetBatches=async( req,res)=>{
+  return res.status(201).json(result);
+};
 
-    const modulecode= req.params.modulecode;
-    const result=(await client.query("SELECT * FROM batch where modulecode =$1",[modulecode])).rows
-    
+const AddBatch = async (req, res) => {
+  const modulecode = req.params.modulecode;
 
-    return res.status(201).json(result);
-}
+  const batch = parseInt(req.body.batch);
 
-const AddBatch=async(req,res)=>{
-    const modulecode= req.params.modulecode;
+  if (batch) {
+    await client.query(
+      "INSERT INTO batch (modulecode, batch) VALUES ($1, $2)",
+      [modulecode, batch]
+    );
+    return res.status(201).json("Successful");
+  }
+  return res.status(400).json("batch is not valid");
+};
 
-    const batch= parseInt(req.body.batch);
-    if(batch){
-        await client.query('INSERT INTO batch (modulecode, batch) VALUES ($1, $2)', [modulecode, batch]);
-        return res.status(201).json("Successful");
-    }
-    return res.status(400).json('batch is not valid');
-
-
-}
-
-module.exports={GetBatches,AddBatch}
+module.exports = { GetBatches, AddBatch };
