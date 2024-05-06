@@ -20,7 +20,11 @@ const AddBatch=async(req,res)=>{
     }
     return res.status(400).json('batch is not valid');
 
-
 }
 
+
+
+
 module.exports={GetBatches,AddBatch}
+
+
