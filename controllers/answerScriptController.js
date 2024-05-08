@@ -1,7 +1,9 @@
 const client = require('../databasepg')
 const s3= require('../config/s3')
 const  guid = require('uuid');
-const { PutObjectCommand, DeleteObjectCommand, } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, DeleteObjectCommand,GetObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const axios  = require('axios');
 
 
 
@@ -115,21 +117,23 @@ const Grade =async (req,res)=>{
 
     const result = await  client.query(`SELECT studentid,fileid FROM studentanswerscripts WHERE batch= $1  AND assignmentid=$2 AND modulecode= $3 `,[batch,assignmentid,modulecode])
     const body = await Promise.all(result.rows.map(async (row) => {
-        const url = s3.getSignedUrl('getObject', {
+        const command = new GetObjectCommand({
             Bucket: process.env.BUCKET_NAME,
             Key: `scripts/${row.fileid}`,
-            Expires: 3600 
-            
         });
-        console.log(url)
+
+        const url = await getSignedUrl(s3, command, {
+            expiresIn: 3600  // 1hr
+        });
 
         return {
             studentId: row.studentid,
-            fileId: row.fileid,
             downloadUrl: url
         };
     }));
-
+    
+    const gradedResult= axios.get('/',body)
+    console.log(gradedResult);
 
 }
 
