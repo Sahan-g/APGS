@@ -1,7 +1,7 @@
 const client = require('../databasepg')
 const s3= require('../config/s3')
 const  guid = require('uuid');
-const { PutObjectCommand, S3,DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, DeleteObjectCommand, } = require('@aws-sdk/client-s3');
 
 
 
@@ -10,12 +10,10 @@ const getAnswerScripts=async (req,res)=>{
 
 
 try{
-    
+
     const batch = req.params.batch;
     const assignmentid= req.params.assignmentid;
     const modulecode = req.params.modulecode;
-
-  
 
     if(!modulecode || !batch || !assignmentid){
         
@@ -38,11 +36,8 @@ try{
     }
 }
 catch{
-
-    
     return res.sendStatus(400)
 }
-
 
 }
 
@@ -57,7 +52,7 @@ const uploadAnswerScripts=async (req,res)=>{
     try {
         const uploadPromises = scripts.map(async (script) => {
             const key = guid.v4();
-            const studentid = script.originalname;
+            const studentid = script.originalname.split('.').slice(0, -1).join('.');
         
             
             const existingFileIdQuery = `SELECT fileid FROM studentanswerscripts WHERE assignmentid = $1 AND studentid = $2 AND batch = $3 AND modulecode = $4`;
@@ -94,10 +89,9 @@ const uploadAnswerScripts=async (req,res)=>{
                 await s3.send(deleteCommand);
             }
         
-            return key;  // Optionally return the key
+            return key; 
         });
         
-
         await Promise.all(uploadPromises);
         return res.status(200).json("success")
 
@@ -113,9 +107,31 @@ const uploadAnswerScripts=async (req,res)=>{
 
 const Grade =async (req,res)=>{
 
-    
+    const batch = req.params.batch;
+    const assignmentid= req.params.assignmentid;
+    const modulecode = req.params.modulecode;
+
+
+
+    const result = await  client.query(`SELECT studentid,fileid FROM studentanswerscripts WHERE batch= $1  AND assignmentid=$2 AND modulecode= $3 `,[batch,assignmentid,modulecode])
+    const body = await Promise.all(result.rows.map(async (row) => {
+        const url = s3.getSignedUrl('getObject', {
+            Bucket: process.env.BUCKET_NAME,
+            Key: `scripts/${row.fileid}`,
+            Expires: 3600 
+            
+        });
+        console.log(url)
+
+        return {
+            studentId: row.studentid,
+            fileId: row.fileid,
+            downloadUrl: url
+        };
+    }));
+
 
 }
 
 
-module.exports={getAnswerScripts, uploadAnswerScripts}
+module.exports={getAnswerScripts, uploadAnswerScripts,Grade}
