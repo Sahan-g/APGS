@@ -116,7 +116,9 @@ const Grade =async (req,res)=>{
 
 
     const result = await  client.query(`SELECT studentid,fileid FROM studentanswerscripts WHERE batch= $1  AND assignmentid=$2 AND modulecode= $3 `,[batch,assignmentid,modulecode])
-    const body = await Promise.all(result.rows.map(async (row) => {
+    const answerscript= await client.query(`SELECT schemeid FROM answers WHERE bacth=$1 AND moduelcode=$2 AND assignmentid=$3 `,[batch,modulecode,assignmentid])
+
+    const scripts = await Promise.all(result.rows.map(async (row) => {
         const command = new GetObjectCommand({
             Bucket: process.env.BUCKET_NAME,
             Key: `scripts/${row.fileid}`,
@@ -132,6 +134,19 @@ const Grade =async (req,res)=>{
         };
     }));
     
+
+    const command= new GetObjectCommand({
+        Bucket:process.env.BUCKET_NAME,
+        key:`schemes/${answerscript.rows[0].schemeid}`
+    })
+    const schemeurl= await  getSignedUrl(s3,command,{expiresIn:3600})
+    const body={
+        'answerScript':schemeurl,
+        'studentAnswers':scripts
+
+
+    }
+
     const gradedResult= axios.get('/',body)
     console.log(gradedResult);
 
