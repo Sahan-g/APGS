@@ -108,15 +108,17 @@ const uploadAnswerScripts=async (req,res)=>{
 
 
 const Grade =async (req,res)=>{
-
+    console.log("you are here")
     const batch = req.params.batch;
     const assignmentid= req.params.assignmentid;
     const modulecode = req.params.modulecode;
+    
 
 
 
     const result = await  client.query(`SELECT studentid,fileid FROM studentanswerscripts WHERE batch= $1  AND assignmentid=$2 AND modulecode= $3 `,[batch,assignmentid,modulecode])
-    const answerscript= await client.query(`SELECT schemeid FROM answers WHERE bacth=$1 AND moduelcode=$2 AND assignmentid=$3 `,[batch,modulecode,assignmentid])
+    console.log("you are here")
+    const answerscript= await client.query(`SELECT schemeid FROM assignments WHERE batch=$1 AND modulecode=$2 AND assignmentid=$3 `,[batch,modulecode,assignmentid])
 
     const scripts = await Promise.all(result.rows.map(async (row) => {
         const command = new GetObjectCommand({
@@ -147,7 +149,7 @@ const Grade =async (req,res)=>{
 
     }
 
-    const gradedResult= axios.get('/',body)
+    const gradedResult= axios.post('http://localhost:5000/grade',body)
     console.log(gradedResult);
 
 }
