@@ -142,8 +142,9 @@ const Grade = async (req, res) => {
             'studentAnswers': scripts
         };
         console.log(body);
-         const gradedResult = await axios.post('localhost', body);
+         //const gradedResult = await axios.post('localhost', body);
         //res.send(gradedResult.data);
+        res.sendStatus(200);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
