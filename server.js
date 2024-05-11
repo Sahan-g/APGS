@@ -11,8 +11,7 @@ const bodyParser = require("body-parser");
 const cloudinary = require("cloudinary");
 const cloudinaryConfig = require("./config/cloudinary");
 const PORT = process.env.PORT || 3500;
-const upload = require('./config/multer');
-
+const upload = require("./config/multer");
 
 const app = express();
 
@@ -43,15 +42,10 @@ app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "/public")));
 
 cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET
-})
-
-
-
-
-
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 app.use("/", require("./routes/root"));
 app.use("/register", require("./routes/register"));
@@ -65,6 +59,7 @@ app.use("/modules", require("./routes/api/modules"));
 app.use("/user", require("./routes/api/user"));
 app.use("/batch", require("./routes/api/batch"));
 app.use("/assignment", require("./routes/api/assignment"));
+app.use("/answerscript", require("./routes/api/answerScripts"));
 
 app.all("*", (req, res) => {
   res.status(404);

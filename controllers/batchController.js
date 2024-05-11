@@ -13,7 +13,6 @@ const AddBatch = async (req, res) => {
   const modulecode = req.params.modulecode;
 
   const batch = parseInt(req.body.batch);
-
   if (batch) {
     await client.query(
       "INSERT INTO batch (modulecode, batch) VALUES ($1, $2)",
