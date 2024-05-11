@@ -681,3 +681,10 @@
 20240508	22:47:38	347713ae-facd-4de9-a47d-247ae089697f	GET	undefined	/answerscript/batch/22/modulecode/002/assignmentid/5/grade
 20240508	22:48:10	143131f4-3feb-4529-b818-0af03752fbac	GET	undefined	/answerscript/batch/22/modulecode/002/assignmentid/5/grade
 20240508	22:48:30	efe9bf61-629c-45bf-b002-8e15871a6dae	GET	undefined	/answerscript/batch/22/modulecode/002/assignmentid/5/grade
+20240511	14:13:32	d359a672-b74b-4915-bc17-c77ecd332a59	POST	undefined	/auth
+20240511	14:25:36	cc44845a-b4fc-45aa-b90c-2325476fd0bc	POST	undefined	/auth
+20240511	14:25:53	c54a94dd-4134-4d38-bd4f-8db31834c981	GET	undefined	/answerscript/batch/22/modulecode/002/assignmentid/5/grade
+20240511	14:27:03	a7cd958d-ee57-4941-ba6a-90f08590547a	GET	undefined	/answerscript/batch/22/modulecode/002/assignmentid/5/grade
+20240511	14:27:20	a3817d3d-1e14-45d0-b1fe-cbddab77c996	GET	undefined	/answerscript/batch/22/modulecode/002/assignmentid/5/grade
+20240511	14:28:53	fe4c1937-d271-4aed-aace-febee977a9da	GET	undefined	/answerscript/batch/22/modulecode/002/assignmentid/5/grade
+20240511	14:29:13	d4209749-b828-49e3-bf43-ddc7fca11247	GET	undefined	/answerscript/batch/22/modulecode/002/assignmentid/5/grade

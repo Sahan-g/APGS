@@ -107,49 +107,47 @@ const uploadAnswerScripts=async (req,res)=>{
 }
 
 
-const Grade =async (req,res)=>{
+const Grade = async (req, res) => {
+    try {
+        const batch = req.params.batch;
+        const assignmentid = req.params.assignmentid;
+        const modulecode = req.params.modulecode;
 
-    const batch = req.params.batch;
-    const assignmentid= req.params.assignmentid;
-    const modulecode = req.params.modulecode;
+        const result = await client.query(`SELECT studentid, fileid FROM studentanswerscripts WHERE batch = $1 AND assignmentid = $2 AND modulecode = $3`, [batch, assignmentid, modulecode]);
+        const answerscript = await client.query(`SELECT schemeid FROM assignments WHERE batch = $1 AND modulecode = $2 AND assignmentid = $3`, [batch, modulecode, assignmentid]);
 
+        const scripts = await Promise.all(result.rows.map(async (row) => {
+            const command = new GetObjectCommand({
+                Bucket: process.env.BUCKET_NAME,
+                Key: `scripts/${row.fileid}`,
+            });
 
+            const url = await getSignedUrl(s3, command, {
+                expiresIn: 3600 // 1hr
+            });
 
-    const result = await  client.query(`SELECT studentid,fileid FROM studentanswerscripts WHERE batch= $1  AND assignmentid=$2 AND modulecode= $3 `,[batch,assignmentid,modulecode])
-    const answerscript= await client.query(`SELECT schemeid FROM answers WHERE bacth=$1 AND moduelcode=$2 AND assignmentid=$3 `,[batch,modulecode,assignmentid])
+            return {
+                studentId: row.studentid,
+                downloadUrl: url
+            };
+        }));
 
-    const scripts = await Promise.all(result.rows.map(async (row) => {
         const command = new GetObjectCommand({
             Bucket: process.env.BUCKET_NAME,
-            Key: `scripts/${row.fileid}`,
+            Key: `schemes/${answerscript.rows[0].schemeid}`
         });
-
-        const url = await getSignedUrl(s3, command, {
-            expiresIn: 3600  // 1hr
-        });
-
-        return {
-            studentId: row.studentid,
-            downloadUrl: url
+        const schemeurl = await getSignedUrl(s3, command, { expiresIn: 3600 });
+        const body = {
+            'answerScript': schemeurl,
+            'studentAnswers': scripts
         };
-    }));
-    
-
-    const command= new GetObjectCommand({
-        Bucket:process.env.BUCKET_NAME,
-        key:`schemes/${answerscript.rows[0].schemeid}`
-    })
-    const schemeurl= await  getSignedUrl(s3,command,{expiresIn:3600})
-    const body={
-        'answerScript':schemeurl,
-        'studentAnswers':scripts
-
-
+        console.log(body);
+         const gradedResult = await axios.post('localhost', body);
+        //res.send(gradedResult.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
     }
-
-    const gradedResult= axios.get('/',body)
-    console.log(gradedResult);
-
 }
 
 
