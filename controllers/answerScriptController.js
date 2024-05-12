@@ -142,8 +142,12 @@ const Grade = async (req, res) => {
             'studentAnswers': scripts
         });
         
-        const gradedResult = await axios.post('http://127.0.0.1:5000/grade', body);
-        console.log(gradedResult);
+        const gradedResult = await axios.post('http://127.0.0.1:5000/grade', body,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+        console.log(gradedResult.data.results[0]);
         
         //res.send(gradedResult.data);
         res.sendStatus(200);
