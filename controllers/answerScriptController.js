@@ -141,21 +141,42 @@ const Grade = async (req, res) => {
             'answerScript': schemeurl,
             'studentAnswers': scripts
         });
-        
+
         const gradedResult = await axios.post('http://127.0.0.1:5000/grade', body,{
             headers: {
               'Content-Type': 'application/json'
             }
-          });
-        console.log(gradedResult.data.results[0]);
-        
-        //res.send(gradedResult.data);
+        });
+
+        const schemevalues = gradedResult.data.results[0].markingAns;
+
+        await Promise.all(gradedResult.data.results.map(async (result) => {
+            await client.query(`
+                UPDATE studentanswerscripts
+                SET marks = $5
+                WHERE assignmentid = $1 
+                  AND modulecode = $2
+                  AND batch = $3 
+                  AND studentid = $4;
+            `, [assignmentid, modulecode, batch, result.studentId, result.score]);
+
+            await Promise.all(result.studentAns.map(async (answer, index) => {
+                let flag = parseInt(schemevalues[index + 1]) === parseInt(answer) ? 1 : 0;
+                await client.query(`
+                    INSERT INTO studentanswers 
+                    (assignmentid, batch, modulecode, questionnumber, studentid, answer, flag)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7);
+                `, [assignmentid, batch, modulecode, index + 1, result.studentId, parseInt(answer), flag]);
+            }));
+        }));
+
         res.sendStatus(200);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 }
+
 
 
 module.exports={getAnswerScripts, uploadAnswerScripts,Grade}
