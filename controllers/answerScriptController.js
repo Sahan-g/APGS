@@ -150,6 +150,20 @@ const Grade = async (req, res) => {
 
         const schemevalues = gradedResult.data.results[0].markingAns;
 
+        schemevalues.map(async (ans, index) => {
+            let i = index + 1; 
+            await client.query(`
+                INSERT INTO answers (asssignmentid, batch, modulecode, questionnumber, answer)
+                VALUES ($1, $2, $3, $4, $5)
+                ON CONFLICT (assignmentid, questionnumber) DO UPDATE
+                SET batch = EXCLUDED.batch,
+                    modulecode = EXCLUDED.modulecode,
+                    questionnumber = EXCLUDED.questionnumber,
+                    answer = EXCLUDED.answer;
+            `, [assignmentid, batch, modulecode, i, parseInt(ans)]);
+        });
+        
+
         await Promise.all(gradedResult.data.results.map(async (result) => {
             await client.query(`
                 UPDATE studentanswerscripts
