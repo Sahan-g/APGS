@@ -137,12 +137,14 @@ const Grade = async (req, res) => {
             Key: `schemes/${answerscript.rows[0].schemeid}`
         });
         const schemeurl = await getSignedUrl(s3, command, { expiresIn: 3600 });
-        const body = {
+        const body = JSON.stringify({
             'answerScript': schemeurl,
             'studentAnswers': scripts
-        };
-        console.log(body);
-         //const gradedResult = await axios.post('localhost', body);
+        });
+        
+        const gradedResult = await axios.post('http://127.0.0.1:5000/grade', body);
+        console.log(gradedResult);
+        
         //res.send(gradedResult.data);
         res.sendStatus(200);
     } catch (error) {
