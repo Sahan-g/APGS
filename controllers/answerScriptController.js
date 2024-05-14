@@ -1,7 +1,7 @@
 const client = require('../databasepg')
 const s3= require('../config/s3')
 const  guid = require('uuid');
-const { PutObjectCommand, DeleteObjectCommand,GetObjectCommand, ArchiveStatus } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, DeleteObjectCommand,GetObjectCommand, } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const axios  = require('axios');
 
@@ -10,19 +10,21 @@ const axios  = require('axios');
 
 const getAnswerScripts=async (req,res)=>{
 
-
+    
 try{
 
     const batch = req.params.batch;
     const assignmentid= req.params.assignmentid;
     const modulecode = req.params.modulecode;
+    console.log(modulecode)
 
     if(!modulecode || !batch || !assignmentid){
         
         return res.sendStatus(400);
     }
     else{
-        const result= await client.query('SELECT * FROM studentanswers where batch= $1 and modulecode=$2 and assignmentid=$3 ',[parseInt(batch),modulecode,parseInt(assignmentid)])
+        
+        const result= await client.query('SELECT * FROM studentanswerscripts WHERE batch= $1 AND modulecode=$2 AND assignmentid=$3 ',[parseInt(batch),modulecode,parseInt(assignmentid)])
         
        
         
@@ -30,6 +32,7 @@ try{
             
             return res.json(result)
         }
+        
         
         return res.json("No Scripts available")
 
@@ -48,6 +51,7 @@ const uploadAnswerScripts=async (req,res)=>{
     const batch = req.params.batch;
     const assignmentid= req.params.assignmentid;
     const modulecode = req.params.modulecode;
+    
 
     const scripts= req.files;
 
@@ -108,6 +112,7 @@ const uploadAnswerScripts=async (req,res)=>{
 
 
 const Grade = async (req, res) => {
+    console.log('modulecode')
     try {
         const batch = req.params.batch;
         const assignmentid = req.params.assignmentid;
@@ -150,7 +155,7 @@ const Grade = async (req, res) => {
         });
 
         const schemevalues = gradedResult.data.results[0].markingAns;
-
+            // insert Correct answers to the answers table
         schemevalues.map(async (ans, index) => {
             let i = index + 1; 
             await client.query(`
@@ -165,6 +170,8 @@ const Grade = async (req, res) => {
         });
         
 
+        // insert marks of each student
+
         await Promise.all(gradedResult.data.results.map(async (result) => {
             await client.query(`
                 UPDATE studentanswerscripts
@@ -177,11 +184,24 @@ const Grade = async (req, res) => {
 
             await Promise.all(result.studentAns.map(async (answer, index) => {
                 let flag = parseInt(schemevalues[index + 1]) === parseInt(answer) ? 1 : 0;
-                await client.query(`
-                    INSERT INTO studentanswers 
-                    (assignmentid, batch, modulecode, questionnumber, studentid, answer, flag)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7);
-                `, [assignmentid, batch, modulecode, index + 1, result.studentId, parseInt(answer), flag]);
+                const alreadyMarked = await client.query(`SELECT graded FROM studentanswerscripts WHERE
+                                            assignmentid=$1 AND modulecode= $2 AND studentid= $3 AND batch= $4
+                `,[assignmentid,modulecode,result.studentId,batch])
+                if(parseInt(alreadyMarked.rows[0])==0){
+
+                    await client.query(`
+                        INSERT INTO studentanswers 
+                        (assignmentid, batch, modulecode, questionnumber, studentid, answer, flag)
+                        VALUES ($1, $2, $3, $4, $5, $6, $7);
+                    `, [assignmentid, batch, modulecode, index + 1, result.studentId, parseInt(answer), flag]);
+                }
+                else {
+                    await client.query(`
+                        UPDATE studentanswers
+                        SET answer = $1, flag = $2
+                        WHERE assignmentid = $3 AND batch = $4 AND modulecode = $5 AND questionnumber = $6 AND studentid = $7;
+                    `, [parseInt(answer), flag, assignmentid, batch, modulecode, index + 1, result.studentId]);
+                }
             }));
         }));
 
@@ -242,6 +262,52 @@ const getGrade = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
+
+const removeFile=async (req,res)=>{
+
+    try{
+
+        const fileid= req.params.fileid;
+        const batch = req.params.batch;
+        const assignmentid = req.params.assignmentid;
+        const modulecode = req.params.modulecode;
+
+
+        if (!modulecode || !batch || !assignmentid || fileid) {
+            return res.sendStatus(400);
+        }
+
+
+        const result = await client.query(` SELECT fileid 
+        FROM studeneanswerscripts 
+        WHERE batch = $1 AND modulecode = $2 AND assignmentid = $3
+        `,[parseInt(batch), modulecode, parseInt(assignmentid)])
+
+        if( result.rowCount=0){
+            return res.sendStatus(404)
+        }
+        const deleteParams = {
+            Bucket: process.env.BUCKET_NAME,
+            Key: 'scripts/'+fileid
+        };
+        const command = new DeleteObjectCommand(deleteParams);
+        await s3.send(command);
+        return res.sendStatus(200);
+
+    }
+    catch(e){
+        console.log(e)
+        return res.status(500).sendjson('Internal Server Error')
+
+
+    }
+
+
+
+
+
+}
 
 module.exports={getAnswerScripts, uploadAnswerScripts,Grade,getGrade}
 
