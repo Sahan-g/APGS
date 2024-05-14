@@ -10,6 +10,6 @@ router.get('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid',upl
 
 router.post('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid',upload.array('scripts'),answerScriptController.uploadAnswerScripts)
 router.post('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/grade',upload.none(),answerScriptController.Grade)
-router.get('/batch/:batch/modulecode/:modulecode/assignemntid/:assignemntid/grade/:')
+router.get('/batch/:batch/modulecode/:modulecode/assignmentid/:assignemntid/grade/:studentid',upload.none(),answerScriptController.getGrade)
 
 module.exports =router;

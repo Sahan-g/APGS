@@ -8,3 +8,18 @@
 20240312	01:16:24	b52eb017-3449-4f2e-b8e6-3144b17cee1c	TypeError: Cannot read properties of undefined (reading 'username')
 20240312	01:16:47	2af50823-1284-4607-b51e-2c40a7df5cc8	TypeError: Cannot read properties of undefined (reading 'username')
 20240508	22:38:01	23e7d891-89c0-42f6-87b1-b2a6181d6734	MulterError: Unexpected field
+20240513	09:52:13	ce86b19f-6dab-4682-b6a1-d69d3d5fdaab	Error: Not allowed by CORS
+20240513	09:52:15	8adaf54d-118f-4322-a72b-6e5d566e3ab6	Error: Not allowed by CORS
+20240513	09:52:16	c76657a1-9a2c-4039-9d9f-2649ea4cb640	Error: Not allowed by CORS
+20240513	09:52:16	3e9fdd9e-1af1-44a2-8e60-8c30f921a83c	Error: Not allowed by CORS
+20240513	09:52:17	02d7625c-7eb8-4796-bf55-5b45ac1ec0f6	Error: Not allowed by CORS
+20240513	09:52:17	62b1b590-ecfe-480f-b015-8a39ddc03aea	Error: Not allowed by CORS
+20240513	09:52:18	176bcd1c-52c7-4951-9f00-dc4b2a236456	Error: Not allowed by CORS
+20240513	09:52:18	fdd8984e-cc39-46d6-9bc1-eaa906f49e39	Error: Not allowed by CORS
+20240513	09:52:19	38778698-db98-48fe-8dca-f5b968c09acf	Error: Not allowed by CORS
+20240513	09:52:20	80eea562-ef34-4791-8331-67c741ac730c	Error: Not allowed by CORS
+20240513	09:52:21	fff3020b-21b7-467e-bde2-4fe8eb100a69	Error: Not allowed by CORS
+20240513	09:52:21	b198956e-ce57-4dd8-b65c-54d30e42d26a	Error: Not allowed by CORS
+20240513	09:52:27	61111158-ece3-4185-b8a5-46dc71ff11e2	Error: Not allowed by CORS
+20240513	09:52:28	b3bc1b10-a996-4573-a34b-117413597db6	Error: Not allowed by CORS
+20240513	09:52:53	58125907-2496-41a3-be57-a684f2fa9203	Error: Not allowed by CORS

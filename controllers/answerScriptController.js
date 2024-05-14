@@ -1,7 +1,7 @@
 const client = require('../databasepg')
 const s3= require('../config/s3')
 const  guid = require('uuid');
-const { PutObjectCommand, DeleteObjectCommand,GetObjectCommand } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, DeleteObjectCommand,GetObjectCommand, ArchiveStatus } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const axios  = require('axios');
 
@@ -112,6 +112,7 @@ const Grade = async (req, res) => {
         const batch = req.params.batch;
         const assignmentid = req.params.assignmentid;
         const modulecode = req.params.modulecode;
+      
 
         const result = await client.query(`SELECT studentid, fileid FROM studentanswerscripts WHERE batch = $1 AND assignmentid = $2 AND modulecode = $3`, [batch, assignmentid, modulecode]);
         const answerscript = await client.query(`SELECT schemeid FROM assignments WHERE batch = $1 AND modulecode = $2 AND assignmentid = $3`, [batch, modulecode, assignmentid]);
@@ -153,7 +154,7 @@ const Grade = async (req, res) => {
         schemevalues.map(async (ans, index) => {
             let i = index + 1; 
             await client.query(`
-                INSERT INTO answers (asssignmentid, batch, modulecode, questionnumber, answer)
+                INSERT INTO answers (assignmentid, batch, modulecode, questionnumber, answer)
                 VALUES ($1, $2, $3, $4, $5)
                 ON CONFLICT (assignmentid, questionnumber) DO UPDATE
                 SET batch = EXCLUDED.batch,
@@ -192,5 +193,75 @@ const Grade = async (req, res) => {
 }
 
 
+const getGrade = async (req, res) => {
+    try {
+        
+        const batch = req.params.batch;
+        const assignmentid = req.params.assignmentid;
+        const modulecode = req.params.modulecode;
+        const studentid = req.params.studentid;
 
-module.exports={getAnswerScripts, uploadAnswerScripts,Grade}
+    
+        const result = await client.query(`
+            SELECT *
+            FROM studentanswerscripts 
+            WHERE assignmentid = $1
+            AND batch = $2 
+            AND modulecode = $3 
+            AND studentid = $4;
+        `, [parseInt(assignmentid), parseInt(batch), modulecode, studentid]);
+        console.log(result)
+        if (result.rowCount === 0) {
+            return res.status(404).json('Selected file not found');
+        }
+
+        const command = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `scripts/${result.rows[0].fileid}`
+        });
+        const scriptUrl = await getSignedUrl(s3, command, { expiresIn: 3600 }); // to send
+        const marks = result.rows[0].marks; // to send
+
+        const studentAnswers = await client.query(`
+            SELECT sa.questionnumber, sa.studentid, sa.answer AS student_answer, a.answer AS correct_answer
+            FROM public.studentanswers sa
+            INNER JOIN public.answers a
+                ON sa.assignmentid = a.assignmentid
+                AND sa.batch = a.batch
+                AND sa.modulecode = a.modulecode
+                AND sa.questionnumber = a.questionnumber
+            WHERE sa.assignmentid = $1
+            AND sa.batch = $2
+            AND sa.modulecode = $3
+            AND sa.studentid = $4;
+        `, [parseInt(assignmentid), parseInt(batch), modulecode, studentid]);
+
+        console.log(studentAnswers);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports={getAnswerScripts, uploadAnswerScripts,Grade,getGrade}
+
+
+
+// //CREATE TABLE IF NOT EXISTS public.answers
+// (
+//     assignmentid integer NOT NULL,
+//     batch integer NOT NULL,
+//     modulecode character varying(10) COLLATE pg_catalog."default" NOT NULL,
+//     questionnumber integer NOT NULL,
+//     answer integer NOT NULL,
+//     CONSTRAINT answers_pkey PRIMARY KEY (questionnumber, assignmentid, batch, modulecode),
+//     CONSTRAINT answers_assignmentid_batch_modulecode_fkey FOREIGN KEY (assignmentid, batch, modulecode)
+//         REFERENCES public.assignments (assignmentid, batch, modulecode) MATCH SIMPLE
+//         ON UPDATE NO ACTION
+//         ON DELETE NO ACTION
+// )
+
+// TABLESPACE pg_default;
+
+// ALTER TABLE IF EXISTS public.answers
+//     OWNER to postgres;
