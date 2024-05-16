@@ -153,7 +153,7 @@ const Grade = async (req, res) => {
               'Content-Type': 'application/json'
             }
         });
-
+        await console.log(gradedResult.data.results[0])
         const schemevalues = gradedResult.data.results[0].markingAns;
             // insert Correct answers to the answers table
         schemevalues.map(async (ans, index) => {
@@ -175,7 +175,7 @@ const Grade = async (req, res) => {
         await Promise.all(gradedResult.data.results.map(async (result) => {
             await client.query(`
                 UPDATE studentanswerscripts
-                SET marks = $5
+                SET marks = $5 
                 WHERE assignmentid = $1 
                   AND modulecode = $2
                   AND batch = $3 
@@ -187,8 +187,9 @@ const Grade = async (req, res) => {
                 const alreadyMarked = await client.query(`SELECT graded FROM studentanswerscripts WHERE
                                             assignmentid=$1 AND modulecode= $2 AND studentid= $3 AND batch= $4
                 `,[assignmentid,modulecode,result.studentId,batch])
-                if(parseInt(alreadyMarked.rows[0])==0){
-
+                //console.log(parseInt(alreadyMarked.rows[0].graded)==0)
+                if(parseInt(alreadyMarked.rows[0].graded)==0){
+                   
                     await client.query(`
                         INSERT INTO studentanswers 
                         (assignmentid, batch, modulecode, questionnumber, studentid, answer, flag)
@@ -196,6 +197,7 @@ const Grade = async (req, res) => {
                     `, [assignmentid, batch, modulecode, index + 1, result.studentId, parseInt(answer), flag]);
                 }
                 else {
+                    
                     await client.query(`
                         UPDATE studentanswers
                         SET answer = $1, flag = $2
@@ -203,6 +205,14 @@ const Grade = async (req, res) => {
                     `, [parseInt(answer), flag, assignmentid, batch, modulecode, index + 1, result.studentId]);
                 }
             }));
+            await client.query(`
+            UPDATE studentanswerscripts
+            SET graded = $1
+            WHERE assignmentid = $1 
+              AND modulecode = $2
+              AND batch = $3 
+              AND studentid = $4;
+        `, [assignmentid, modulecode, batch, result.studentId]);
         }));
 
         res.sendStatus(200);
@@ -215,13 +225,17 @@ const Grade = async (req, res) => {
 
 const getGrade = async (req, res) => {
     try {
-        
-        const batch = req.params.batch;
-        const assignmentid = req.params.assignmentid;
+        const batch = parseInt(req.params.batch);
+        const assignmentid = parseInt(req.params.assignmentid);
         const modulecode = req.params.modulecode;
         const studentid = req.params.studentid;
+        
+        console.log(assignmentid)
+       
+        if (isNaN(batch) || isNaN(assignmentid)) {
+            return res.status(400).json({ error: 'Invalid batch or assignment ID' });
+        }
 
-    
         const result = await client.query(`
             SELECT *
             FROM studentanswerscripts 
@@ -229,8 +243,9 @@ const getGrade = async (req, res) => {
             AND batch = $2 
             AND modulecode = $3 
             AND studentid = $4;
-        `, [parseInt(assignmentid), parseInt(batch), modulecode, studentid]);
-        console.log(result)
+        `, [assignmentid, batch, modulecode, studentid]);
+
+
         if (result.rowCount === 0) {
             return res.status(404).json('Selected file not found');
         }
@@ -239,6 +254,7 @@ const getGrade = async (req, res) => {
             Bucket: process.env.BUCKET_NAME,
             Key: `scripts/${result.rows[0].fileid}`
         });
+
         const scriptUrl = await getSignedUrl(s3, command, { expiresIn: 3600 }); // to send
         const marks = result.rows[0].marks; // to send
 
@@ -254,14 +270,20 @@ const getGrade = async (req, res) => {
             AND sa.batch = $2
             AND sa.modulecode = $3
             AND sa.studentid = $4;
-        `, [parseInt(assignmentid), parseInt(batch), modulecode, studentid]);
+        `, [assignmentid, batch, modulecode, studentid]);
+        
 
-        console.log(studentAnswers);
+       
+        const infoResult= result.rows;
+        const jsonAnswers= studentAnswers.rows
+        
+        return res.status(200).json({ infoResult, scriptUrl, marks, jsonAnswers });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        return res.status(500).send('Internal Server Error');
     }
 };
+
 
 
 const removeFile=async (req,res)=>{
