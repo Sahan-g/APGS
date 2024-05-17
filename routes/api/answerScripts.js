@@ -9,7 +9,7 @@ const upload= require('../../config/multer')
 router.get('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid',upload.none(),answerScriptController.getAnswerScripts)
 
 router.post('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid',upload.array('scripts'),answerScriptController.uploadAnswerScripts)
-router.get('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/grade',upload.none(),answerScriptController.Grade)
-
+router.post('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/grade',upload.none(),answerScriptController.Grade)
+router.get('/batch/:batch/modulecode/:modulecode/assignemntid/:assignemntid/grade/:')
 
 module.exports =router;

@@ -134,13 +134,74 @@ const Grade = async (req, res) => {
       Key: `schemes/${answerscript.rows[0].schemeid}`,
     });
     const schemeurl = await getSignedUrl(s3, command, { expiresIn: 3600 });
-    const body = {
+    const body = JSON.stringify({
       answerScript: schemeurl,
       studentAnswers: scripts,
-    };
-    console.log(body);
-    //const gradedResult = await axios.post('localhost', body);
-    //res.send(gradedResult.data);
+    });
+
+    const gradedResult = await axios.post("http://127.0.0.1:5000/grade", body, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const schemevalues = gradedResult.data.results[0].markingAns;
+
+    schemevalues.map(async (ans, index) => {
+      let i = index + 1;
+      await client.query(
+        `
+                INSERT INTO answers (asssignmentid, batch, modulecode, questionnumber, answer)
+                VALUES ($1, $2, $3, $4, $5)
+                ON CONFLICT (assignmentid, questionnumber) DO UPDATE
+                SET batch = EXCLUDED.batch,
+                    modulecode = EXCLUDED.modulecode,
+                    questionnumber = EXCLUDED.questionnumber,
+                    answer = EXCLUDED.answer;
+            `,
+        [assignmentid, batch, modulecode, i, parseInt(ans)]
+      );
+    });
+
+    await Promise.all(
+      gradedResult.data.results.map(async (result) => {
+        await client.query(
+          `
+                UPDATE studentanswerscripts
+                SET marks = $5
+                WHERE assignmentid = $1 
+                  AND modulecode = $2
+                  AND batch = $3 
+                  AND studentid = $4;
+            `,
+          [assignmentid, modulecode, batch, result.studentId, result.score]
+        );
+
+        await Promise.all(
+          result.studentAns.map(async (answer, index) => {
+            let flag =
+              parseInt(schemevalues[index + 1]) === parseInt(answer) ? 1 : 0;
+            await client.query(
+              `
+                    INSERT INTO studentanswers 
+                    (assignmentid, batch, modulecode, questionnumber, studentid, answer, flag)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7);
+                `,
+              [
+                assignmentid,
+                batch,
+                modulecode,
+                index + 1,
+                result.studentId,
+                parseInt(answer),
+                flag,
+              ]
+            );
+          })
+        );
+      })
+    );
+
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
