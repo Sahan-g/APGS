@@ -2,15 +2,30 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const client = require('../databasepg.js');
 const bcrypt= require('bcrypt')
+const { PutObjectCommand, DeleteObjectCommand,GetObjectCommand, } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const s3 = require('../config/s3.js')
+const  guid = require('uuid');
+
 
 const getuser=async (req,res)=>{
 
-   const user= (await client.query('SELECT firstname,lastname,email,isadmin,designation,profilepic,mimetype   from users where email = $1',[req.user])).rows[0]
+   const user= (await client.query('SELECT firstname,lastname,email,isadmin,designation,profilepic   from users where email = $1',[req.user])).rows[0]
    
-   const image = {"image":user.profilepic,
-   "mimetype":user.mimetype
-    }
+   let url= null;
+console.log(user.profilepic)
+ if(user.profilepic!= null){
 
+    const command = new GetObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `userimages/${user.profilepic}`,
+    });
+
+     url = await getSignedUrl(s3, command, {
+        expiresIn: 3600 // 1hr
+    });
+
+ }
 
    const response={
     "firstname":user.firstname,
@@ -18,7 +33,7 @@ const getuser=async (req,res)=>{
     "email":user.email,
     "isAdmin":user.isadmin,
     "designation":user.designation,
-    "profilepic":image
+    "profilepic":url
    }
    
    
@@ -60,10 +75,36 @@ const AddProfilePicture=async( req,res)=>{
     const user= req.user;
     const image= req.file;
 
-    
+    const key = guid.v4();
+    const userImage= (await client.query('SELECT profilepic  FROM users WHERE email = $1',[req.user])).rows[0]
     if(image){
 
-        await client.query('UPDATE users SET profilepic = $1, mimetype = $2 WHERE email = $3',[image.buffer,image.mimetype,user])
+        if(userImage.profilepic){
+
+            const deleteParams = {
+                Bucket: process.env.BUCKET_NAME,
+                Key: 'userimages/' + userImage.profilepic
+            };
+            const deleteCommand = new DeleteObjectCommand(deleteParams);
+            await s3.send(deleteCommand);
+
+
+
+        }
+        
+        const params = {
+            Bucket: process.env.BUCKET_NAME,
+            Key: 'userimages/' + key,
+            Body: image.buffer,
+            ContentType: image.mimetype
+        };
+        const command = new PutObjectCommand(params);
+        
+        
+        await s3.send(command);
+        
+        await client.query('UPDATE users SET profilepic = $1  WHERE email = $2',[key,user])
+
         return res.status(201).json('Profile Picture added')
 
     }
