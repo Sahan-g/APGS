@@ -284,7 +284,7 @@ const getGrade = async (req, res) => {
     }
 };
 
-
+// not fully completed
 const removeFile = async (req, res) => {
     try {
         const fileid = req.params.fileid;
@@ -314,7 +314,9 @@ const removeFile = async (req, res) => {
         const command = new DeleteObjectCommand(deleteParams);
         await s3.send(command);
 
-        await client.query('DELETE FROM studentanswerscripts WHERE ')
+        await client.query('DELETE FROM studentanswerscripts WHERE modulecode=$1 AND assignmentid=$2 AND batch=$3 AND fileid =$4 '
+            ,[modulecode,assignmentid,batch,fileid]
+        )
 
         return res.sendStatus(200);
     } catch (e) {
@@ -348,3 +350,25 @@ module.exports={getAnswerScripts, uploadAnswerScripts,Grade,getGrade,removeFile}
 
 
 // max  min  
+
+
+// CREATE TABLE IF NOT EXISTS public.studentanswers
+// (
+//     assignmentid integer NOT NULL,
+//     batch integer NOT NULL,
+//     modulecode character varying(10) COLLATE pg_catalog."default" NOT NULL,
+//     questionnumber integer NOT NULL,
+//     studentid character varying(10) COLLATE pg_catalog."default" NOT NULL,
+//     answer integer NOT NULL,
+//     flag integer DEFAULT 0,
+//     CONSTRAINT studentanswers_pkey PRIMARY KEY (questionnumber, assignmentid, batch, modulecode, studentid),
+//     CONSTRAINT studentanswers_assignmentid_studentid_modulecode_batch_fkey FOREIGN KEY (assignmentid, studentid, modulecode, batch)
+//         REFERENCES public.studentanswerscripts (assignmentid, studentid, modulecode, batch) MATCH SIMPLE
+//         ON UPDATE NO ACTION
+//         ON DELETE NO ACTION
+// )
+
+// TABLESPACE pg_default;
+
+// ALTER TABLE IF EXISTS public.studentanswers
+//     OWNER to postgres;

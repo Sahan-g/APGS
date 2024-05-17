@@ -2186,3 +2186,15 @@
 20240518	00:17:13	4562894a-9b39-4c65-bed5-a415d08eb425	GET	undefined	/report/batch/100/modulecode/MOD%201/assignmentid/20
 20240518	00:18:06	3fb989ed-785b-4119-ac33-5c2dfac57675	GET	undefined	/report/batch/100/modulecode/MOD%201/assignmentid/20
 20240518	00:18:47	189ab4e8-f902-4fca-8f13-3bc80ee78f98	GET	undefined	/report/batch/100/modulecode/MOD%201/assignmentid/20
+20240518	00:26:44	4d7aee3d-4898-4da3-ad68-691f971d83d3	DELETE	undefined	/answerscript/batch/100/modulecode/MOD%201/assignmentid/20/fileid/8efaa737-3699-410a-bcad-ba6fbb73d532
+20240518	00:26:54	6ef27e77-c15e-46ff-8fde-c5609224ff5b	GET	http://localhost:3000	/refresh/
+20240518	00:26:54	49cde796-94ef-48e2-b419-0e421e97adc7	GET	http://localhost:3000	/refresh/
+20240518	00:26:55	65c606f4-e845-4d2e-8334-1fffa205fcf3	OPTIONS	http://localhost:3000	/answerscript/batch/100/modulecode/MOD%201/assignmentid/20
+20240518	00:26:55	053eefa6-6d3d-4a61-8147-ae5acf662d88	GET	http://localhost:3000	/answerscript/batch/100/modulecode/MOD%201/assignmentid/20
+20240518	00:26:55	8750521c-549c-4ed0-8638-c72b9d6d7af4	GET	http://localhost:3000	/answerscript/batch/100/modulecode/MOD%201/assignmentid/20
+20240518	00:27:10	83e33b89-86f9-45d1-a209-b6c152ddade7	DELETE	undefined	/answerscript/batch/100/modulecode/MOD%201/assignmentid/20/fileid/8efaa737-3699-410a-bcad-ba6fbb73d532
+20240518	00:35:06	0af1c7c6-4eb7-4e70-ac54-a40dee8e3257	DELETE	undefined	/answerscript/batch/100/modulecode/MOD%201/assignmentid/20/fileid/8efaa737-3699-410a-bcad-ba6fbb73d532
+20240518	00:40:20	37c3c723-b072-4982-94fc-a0f4c9f3e240	DELETE	undefined	/answerscript/batch/100/modulecode/MOD%201/assignmentid/20/fileid/8efaa737-3699-410a-bcad-ba6fbb73d532
+20240518	00:40:49	715f156e-444c-4279-890b-36b831b501c5	DELETE	undefined	/answerscript/batch/100/modulecode/MOD%201/assignmentid/20/fileid/50e7b520-e484-4128-b74d-6b7abd177a9d
+20240518	00:41:35	745b8beb-7fed-4607-ae3d-ff30c121e078	GET	undefined	/report/batch/100/modulecode/MOD%201/assignmentid/20
+20240518	00:41:45	a91fb28a-2c68-43cf-b8f4-983ac3ac50f0	GET	undefined	/report/batch/100/modulecode/MOD%201/assignmentid/20
