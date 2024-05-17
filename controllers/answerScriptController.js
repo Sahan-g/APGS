@@ -285,53 +285,44 @@ const getGrade = async (req, res) => {
 };
 
 
-
-const removeFile=async (req,res)=>{
-
-    try{
-
-        const fileid= req.params.fileid;
+const removeFile = async (req, res) => {
+    try {
+        const fileid = req.params.fileid;
         const batch = req.params.batch;
         const assignmentid = req.params.assignmentid;
         const modulecode = req.params.modulecode;
 
-
-        if (!modulecode || !batch || !assignmentid || fileid) {
+        if (!modulecode || !batch || !assignmentid || !fileid) {
             return res.sendStatus(400);
         }
 
+        const result = await client.query(`
+            SELECT fileid 
+            FROM studentanswerscripts 
+            WHERE batch = $1 AND modulecode = $2 AND assignmentid = $3
+        `, [parseInt(batch), modulecode, parseInt(assignmentid)]);
 
-        const result = await client.query(` SELECT fileid 
-        FROM studeneanswerscripts 
-        WHERE batch = $1 AND modulecode = $2 AND assignmentid = $3
-        `,[parseInt(batch), modulecode, parseInt(assignmentid)])
-
-        if( result.rowCount=0){
-            return res.sendStatus(404)
+        if (result.rowCount === 0) {
+            return res.sendStatus(404);
         }
+
         const deleteParams = {
             Bucket: process.env.BUCKET_NAME,
-            Key: 'scripts/'+fileid
+            Key: 'scripts/' + fileid
         };
+
         const command = new DeleteObjectCommand(deleteParams);
         await s3.send(command);
+
+        await client.query('DELETE FROM studentanswerscripts WHERE ')
+
         return res.sendStatus(200);
-
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json('Internal Server Error');
     }
-    catch(e){
-        console.log(e)
-        return res.status(500).sendjson('Internal Server Error')
-
-
-    }
-
-
-
-
-
-}
-
-module.exports={getAnswerScripts, uploadAnswerScripts,Grade,getGrade}
+};
+module.exports={getAnswerScripts, uploadAnswerScripts,Grade,getGrade,removeFile}
 
 
 
@@ -353,3 +344,7 @@ module.exports={getAnswerScripts, uploadAnswerScripts,Grade,getGrade}
 
 // ALTER TABLE IF EXISTS public.answers
 //     OWNER to postgres;
+
+
+
+// max  min  
