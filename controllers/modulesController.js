@@ -7,7 +7,7 @@ const getModules =async  (req,res)=>{
 
     const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
     const modules = await client.query(
-        'SELECT m.modulecode, m.modulename FROM users AS u JOIN lecturer_modules AS lm ON u.userid = lm.userid JOIN modules AS m ON lm.modulecode = m.modulecode WHERE u.userid = $1',
+        'SELECT m.modulecode, m.modulename, m.credits FROM users AS u JOIN lecturer_modules AS lm ON u.userid = lm.userid JOIN modules AS m ON lm.modulecode = m.modulecode WHERE u.userid = $1',
         [userid]
     );
     
@@ -15,7 +15,7 @@ const getModules =async  (req,res)=>{
 }
 
 const AddModule =async (req,res)=>{
-    var {modulecode,modulename,credits} = req.body;
+    var {modulecode,modulename,credits,n} = req.body;
 
     if(!modulecode) res.status(400).json('Module Code is Required');
     if(!modulename) res.status(400).json('Module Name is Required');
@@ -23,7 +23,7 @@ const AddModule =async (req,res)=>{
     
 
     modulecode= modulecode.toUpperCase();
-    modulename= modulecode.toUpperCase();
+    modulename= modulename.toUpperCase();
     
     
     const result = await client.query('SELECT COUNT(*) FROM modules WHERE modulecode = $1', [modulecode]);
