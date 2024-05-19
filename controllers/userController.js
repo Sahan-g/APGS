@@ -53,7 +53,7 @@ const editUser= async (req,res)=>{
     if(!firstName || !lastName || !designation ){
         return res.status(400).json({'message':'All the fileds are required'});
     }
-    await client.query('UPDATE users SET firstname = $1, lastname=$2, designation=$3  WHERE email = $4',[firstname,lastname,designation,req.user])
+    await client.query('UPDATE users SET firstname = $1, lastname=$2, designation=$3  WHERE email = $4',[firstName,lastName,designation,req.user])
     
     return res.status(200).json({'message':'Profile updated'})
     // const {email,
