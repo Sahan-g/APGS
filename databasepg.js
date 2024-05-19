@@ -10,7 +10,7 @@ const dbClient = new Client({
 
 
 // const dbClient = new Client({
-//     host: "34.69.240.11",
+//     host: "34.29.137.18",
 //     user: "postgres",
 //     port: 5432,
 //     password: "12345678",

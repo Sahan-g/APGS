@@ -5,12 +5,14 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "test": "jest"
   },
   "author": "s",
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.536.0",
+    "@aws-sdk/s3-request-presigner": "^3.569.0",
     "axios": "^1.6.8",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.2",
@@ -18,11 +20,16 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "date-fns": "^2.23.0",
+    "describe": "^1.2.0",
     "dotenv": "^10.0.0",
+    "expect.js": "^0.3.1",
     "express": "^4.17.1",
+    "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.11.3",
+    "supertest": "^7.0.0",
+    "test": "^3.3.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

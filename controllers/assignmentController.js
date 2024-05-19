@@ -51,7 +51,7 @@ const HandleNewAssignment= async (req,res)=>{
             ContentType: req.file.mimetype,
         }
         
-        console.log(req.file)
+        
        
         const command = new PutObjectCommand(params)
         await s3.send(command)
@@ -119,6 +119,8 @@ const Update =async (req,res)=>{
     }
 
 }
+
+
 
 
 module.exports={getAssignments,HandleNewAssignment,ChangeScheme,Update}
