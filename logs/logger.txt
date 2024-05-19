@@ -2214,3 +2214,7 @@
 20240519	11:52:08	b39f4ba0-c61e-4e46-a6fd-a7f76ef041ff	PUT	undefined	/user/
 20240519	11:52:26	3f55c5e6-31a3-4b65-8641-1e0152ba7797	PUT	undefined	/user/
 20240519	11:53:03	fa2d1bff-8dd2-4b2d-92b2-a23384cc2bab	PUT	undefined	/user/
+20240519	19:36:45	30eb47ee-7a13-4952-b096-808327e03248	POST	undefined	/register
+20240519	19:38:09	ce399db5-6bc8-4a44-bb1f-0000f9248c3c	POST	undefined	/auth
+20240519	19:38:44	d8ffb991-dbb5-4688-8943-01badc7b00b4	POST	undefined	/auth
+20240519	19:39:25	db66f9be-bf9a-45c3-a8ff-1033fda07ebf	PUT	undefined	/user/

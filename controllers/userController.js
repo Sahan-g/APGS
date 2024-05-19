@@ -104,6 +104,7 @@ const changeEmail =async (req,res)=>{
         }
         else{
             await client.query(`UPDATE users SET email=$1 where email = $2 `,[newmail, req.user])
+            return res.status(200).json({'message':'email address chnaged successful'})
         }
     }
 
@@ -155,14 +156,23 @@ const AddProfilePicture=async( req,res)=>{
 
 const changePassword=async (req,res)=>{
 
-    const {password}= req.body;
-    if(!password){
-        return res.status(400).json({'message':'passowrd cannot be empty'});
+    const {oldPassword,newPassword}= req.body;
+    oldHash = await bcrypt.hash(oldPassword,10);
+    const result= await (await client.query(`SELECT hashedpassword FROM users WHERE user =$1`,[req.user])).rows[0]
+    if(result.hashedpassword != oldHash ){
+        return res.status(400).json({'message':'Current Password is Wrong'})
     }
-    const hash = await bcrypt.hash(password, 10);
+    else{
 
-    await client.query(`UPDATE users SET hashedpassword=$1 where email=$2`,[hash,req.user])
-    return res.status(200).json({'message':'password Chaged succeffully'})
+        if(!newPassword){
+            return res.status(400).json({'message':'passowrd cannot be empty'});
+        }
+        const hashnew = await bcrypt.hash(newPassword, 10);
+    
+        await client.query(`UPDATE users SET hashedpassword=$1 where email=$2`,[hash,req.user])
+        return res.status(200).json({'message':'password Chaged succeffully'})
+    }
+ 
 
 
 }
