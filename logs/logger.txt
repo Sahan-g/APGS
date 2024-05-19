@@ -3542,3 +3542,17 @@
 20240519	20:37:35	ce112b21-4dae-4d48-93fd-af07945c7d84	GET	http://localhost:3000	/modules/view/EE3222
 20240519	20:37:35	57978c1f-61ab-4a66-b7cb-f04279a9e91a	GET	http://localhost:3000	/user
 20240519	20:37:35	3b42e7f5-ed4f-4f51-9b1e-82bced4ba46d	GET	http://localhost:3000	/modules/view/EE3222
+20240519	20:38:19	4ab2fa79-8b0e-40a9-845f-fe608a2dd9a5	GET	http://localhost:3000	/refresh/
+20240519	20:38:19	5cc3e26e-881b-4f6a-9603-ffcb46e8295a	OPTIONS	http://localhost:3000	/modules/view/EE3222
+20240519	20:38:19	4ef79ed0-fe8e-413d-ad60-d70bfc0e24de	GET	http://localhost:3000	/modules/view/EE3222
+20240519	20:38:25	78ceb37a-7c75-4585-b984-2101097b6f51	GET	http://localhost:3000	/refresh/
+20240519	20:38:25	6588a78f-6e37-4ca4-9cc6-d5c94dab9b5d	OPTIONS	http://localhost:3000	/modules/view/EE3222
+20240519	20:38:25	8ac316ea-235e-43f3-9cd3-fa38e4864b0b	GET	http://localhost:3000	/modules/view/EE3222
+20240519	20:38:34	5547eb7a-c2c4-41f9-9e18-415c0765502c	OPTIONS	http://localhost:3000	/user
+20240519	20:38:34	2b8d5f88-4ed8-4f48-b802-e774a7fb04fd	GET	http://localhost:3000	/refresh/
+20240519	20:38:34	46d12b2a-3b49-4c11-ae13-80251e5ba485	GET	http://localhost:3000	/user
+20240519	20:38:34	9ba2d79a-06ec-4a5c-8afb-2af988818229	GET	http://localhost:3000	/refresh/
+20240519	20:38:34	bdc27b77-d7d8-472e-9ee6-4766eda16630	OPTIONS	http://localhost:3000	/modules/view/EE3222
+20240519	20:38:34	8fe9e11c-b889-4990-be58-77b8c00c986f	GET	http://localhost:3000	/modules/view/EE3222
+20240519	20:38:34	c12ff91b-12a4-4a3a-ae61-ccf8a9d1bb27	GET	http://localhost:3000	/user
+20240519	20:38:35	52611491-8ee2-4b81-8870-cb7fe3166ea3	GET	http://localhost:3000	/modules/view/EE3222
