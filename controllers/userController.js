@@ -153,7 +153,22 @@ const AddProfilePicture=async( req,res)=>{
 }
 
 
-module.exports={getuser,editUser,AddProfilePicture,changeEmail};
+const changePassword=async (req,res)=>{
+
+    const {password}= req.body;
+    if(!password){
+        return res.status(400).json({'message':'passowrd cannot be empty'});
+    }
+    const hash = await bcrypt.hash(password, 10);
+
+    await client.query(`UPDATE users SET hashedpassword=$1 where email=$2`,[hash,req.user])
+    return res.status(200).json({'message':'password Chaged succeffully'})
+
+
+}
+
+
+module.exports={getuser,editUser,AddProfilePicture,changeEmail,changePassword};
 
 
 
