@@ -10,7 +10,7 @@ const  guid = require('uuid');
 
 const getuser=async (req,res)=>{
 
-   const user= (await client.query('SELECT firstname,lastname,email,isadmin,designation,profilepic   from users where email = $1',[req.user])).rows[0]
+   const user= (await client.query('SELECT firstname,lastname,email,isadmin,designation,profilepic from users where email = $1',[req.user])).rows[0]
   
    let url= null;
 
