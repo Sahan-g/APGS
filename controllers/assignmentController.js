@@ -130,7 +130,7 @@ try {
     }else{
 
 
-        await client.query(`DELETE FROM assignments WHERE moduldecode=$1 AND assignmentid=$2 AND batch=$3`,[modulecode,id,batch])
+        await client.query(`DELETE FROM assignments WHERE modulecode=$1 AND assignmentid=$2 AND batch=$3`,[modulecode,id,batch])
         return res.status(200).json({'message':'successful'})
 
     }
