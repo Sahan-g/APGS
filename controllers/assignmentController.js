@@ -120,7 +120,60 @@ const Update =async (req,res)=>{
 
 }
 
+const deleteAssignment=async(req,res)=>{
+
+try {
+
+    const {id,modulecode,batch}= req.params;
+    if(!id || !modulecode || !batch){
+        return res.status(400).json('All fields Are required')
+    }else{
+
+
+        await client.query(`DELETE FROM assignments WHERE moduldecode=$1 AND assignmentid=$2 AND batch=$3`,[modulecode,id,batch])
+        return res.status(200).json({'message':'successful'})
+
+    }
 
 
 
-module.exports={getAssignments,HandleNewAssignment,ChangeScheme,Update}
+
+    
+} catch (e) {
+    console.log(e)
+
+    return res.status(400).json('Bad Request')
+}
+
+}
+
+
+module.exports={getAssignments,HandleNewAssignment,ChangeScheme,Update,deleteAssignment}
+
+
+
+
+// -- Table: public.assignments
+
+// -- DROP TABLE IF EXISTS public.assignments;
+
+// CREATE TABLE IF NOT EXISTS public.assignments
+// (
+//     batch integer NOT NULL,
+//     modulecode character varying(10) COLLATE pg_catalog."default" NOT NULL,
+//     assignmenttitle character varying(100) COLLATE pg_catalog."default" NOT NULL,
+//     assignmentid integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+//     assignmentdate date NOT NULL,
+//     schemeid character varying COLLATE pg_catalog."default",
+//     schemepath character varying COLLATE pg_catalog."default",
+//     CONSTRAINT assignments_pkey PRIMARY KEY (batch, modulecode, assignmentid),
+//     CONSTRAINT assignments_modulecode_fkey FOREIGN KEY (modulecode)
+//         REFERENCES public.modules (modulecode) MATCH SIMPLE
+//         ON UPDATE NO ACTION
+//         ON DELETE NO ACTION
+// )
+
+// TABLESPACE pg_default;
+
+// ALTER TABLE IF EXISTS public.assignments
+//     OWNER to postgres;
