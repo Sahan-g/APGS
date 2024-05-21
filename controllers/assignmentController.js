@@ -161,9 +161,12 @@ const getDetails=async (req,res)=>{
         }
     
         const result= await client.query(`SELECT * FROM assignments WHERE modulecode=$1 AND batch = $2  AND assignmentid = $3 `
-        ,[modulecode,batch,id] ).rows[0]
+        ,[modulecode,batch,id] )
+        if(result.rowCount==0){
+            return res.status(200).json({'message': 'no assignments found'})
+        }
     
-        return res.status(200).json(result)
+        return res.status(200).json(result.rows)
     }
     catch(e){
         console.log(e);
