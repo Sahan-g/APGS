@@ -150,16 +150,25 @@ try {
 
 const getDetails=async (req,res)=>{
 
-    const modulecode= req.params.modulecode;
-    const batch =req.params.batch;
-    const id= req.params.id
+    try{
 
-    if(!modulecode || !batch || !id){
-        return res.status(400).json({'message':'all the filelds are required'});
+        const modulecode= req.params.modulecode;
+        const batch =req.params.batch;
+        const id= req.params.id
+    
+        if(!modulecode || !batch || !id){
+            return res.status(400).json({'message':'all the filelds are required'});
+        }
+    
+        const result= await client.query(`SELECT * FROM assignments WHERE modulecode=$1 AND batch = $2  AND assignmentid = $3 `
+        ,[modulecode,batch,id] ).rows[0]
+    
+        return res.status(200).json(result)
     }
-
-    const result= await client.query(`SELECT * FROM assignments WHERE modulecode=$1 AND batch = $2  AND assignmentid = $3 `
-    ,[modulecode,batch,id] ).rows[0]
+    catch(e){
+        console.log(e);
+        return res.status(500)
+    }
 
 
 }
