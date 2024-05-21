@@ -11,7 +11,7 @@ const getAssignments=async(req,res)=>{
         const modulecode= req.params.modulecode;
         const batch =req.params.batch;
         
-        console.log(modulecode,batch)
+        
     
     
     
@@ -120,7 +120,87 @@ const Update =async (req,res)=>{
 
 }
 
+const deleteAssignment=async(req,res)=>{
+
+try {
+
+    const {id,modulecode,batch}= req.params;
+    if(!id || !modulecode || !batch){
+        return res.status(400).json('All fields Are required')
+    }else{
+
+
+        await client.query(`DELETE FROM assignments WHERE modulecode=$1 AND assignmentid=$2 AND batch=$3`,[modulecode,id,batch])
+        return res.status(200).json({'message':'successful'})
+
+    }
 
 
 
-module.exports={getAssignments,HandleNewAssignment,ChangeScheme,Update}
+
+    
+} catch (e) {
+    console.log(e)
+
+    return res.status(400).json('Bad Request')
+}
+
+}
+
+
+const getDetails=async (req,res)=>{
+
+    try{
+
+        const modulecode= req.params.modulecode;
+        const batch =req.params.batch;
+        const id= req.params.id
+    
+        if(!modulecode || !batch || !id){
+            return res.status(400).json({'message':'all the filelds are required'});
+        }
+    
+        const result= await client.query(`SELECT * FROM assignments WHERE modulecode=$1 AND batch = $2  AND assignmentid = $3 `
+        ,[modulecode,batch,id] ).rows[0]
+    
+        return res.status(200).json(result)
+    }
+    catch(e){
+        console.log(e);
+        return res.status(500)
+    }
+
+
+}
+
+
+
+module.exports={getAssignments,HandleNewAssignment,ChangeScheme,Update,deleteAssignment,getDetails}
+
+
+
+
+// -- Table: public.assignments
+
+// -- DROP TABLE IF EXISTS public.assignments;
+
+// CREATE TABLE IF NOT EXISTS public.assignments
+// (
+//     batch integer NOT NULL,
+//     modulecode character varying(10) COLLATE pg_catalog."default" NOT NULL,
+//     assignmenttitle character varying(100) COLLATE pg_catalog."default" NOT NULL,
+//     assignmentid integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+//     assignmentdate date NOT NULL,
+//     schemeid character varying COLLATE pg_catalog."default",
+//     schemepath character varying COLLATE pg_catalog."default",
+//     CONSTRAINT assignments_pkey PRIMARY KEY (batch, modulecode, assignmentid),
+//     CONSTRAINT assignments_modulecode_fkey FOREIGN KEY (modulecode)
+//         REFERENCES public.modules (modulecode) MATCH SIMPLE
+//         ON UPDATE NO ACTION
+//         ON DELETE NO ACTION
+// )
+
+// TABLESPACE pg_default;
+
+// ALTER TABLE IF EXISTS public.assignments
+//     OWNER to postgres;
