@@ -106,16 +106,16 @@ const Update =async (req,res)=>{
     try{
 
         const {id, modulecode,batch} = req.params;
-        const title = req.body.title;
+        const title = req.body.assignmenttitle;
         if(title==null){
             return res.status(400).josn('assignment title cannot be null');
         }
-        await client.query('UPDATE assignments assignmenttitle= $1 WHERE modulecode = $2 batch=$3 assignmentid=$4',[title,modulecode,batch,id])
+        await client.query('UPDATE assignments SET assignmenttitle = $1 WHERE modulecode = $2 batch=$3 assignmentid=$4',[title,modulecode,batch,id])
         return res.status(200).json('successful');
     }
     catch (e){
         console.log(e);
-        return res.satus(400).json('Bad request');
+        return res.status(400).json('Bad request');
     }
 
 }
