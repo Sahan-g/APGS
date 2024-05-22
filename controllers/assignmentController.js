@@ -11,7 +11,7 @@ const getAssignments=async(req,res)=>{
         const modulecode= req.params.modulecode;
         const batch =req.params.batch;
         
-        console.log(modulecode,batch)
+        
     
     
     
@@ -148,7 +148,37 @@ try {
 }
 
 
-module.exports={getAssignments,HandleNewAssignment,ChangeScheme,Update,deleteAssignment}
+const getDetails=async (req,res)=>{
+
+    try{
+
+        const modulecode= req.params.modulecode;
+        const batch =req.params.batch;
+        const id= req.params.id
+    
+        if(!modulecode || !batch || !id){
+            return res.status(400).json({'message':'all the filelds are required'});
+        }
+    
+        const result= await client.query(`SELECT * FROM assignments WHERE modulecode=$1 AND batch = $2  AND assignmentid = $3 `
+        ,[modulecode,batch,id] )
+        if(result.rowCount==0){
+            return res.status(200).json({'message': 'no assignments found'})
+        }
+    
+        return res.status(200).json(result.rows)
+    }
+    catch(e){
+        console.log(e);
+        return res.status(500)
+    }
+
+
+}
+
+
+
+module.exports={getAssignments,HandleNewAssignment,ChangeScheme,Update,deleteAssignment,getDetails}
 
 
 
