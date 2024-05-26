@@ -63,8 +63,15 @@ const GetModule= async (req,res)=>{
         
         const modulecode= req.params.modulecode.toUpperCase();
     
-        const Accessresult = await client.query(`SELECT u.userid , m.modulecode FROM users AS u INNER JOIN lecturer_modules as m where u.userid =$1  `
-        ,[modulecode])
+        const Accessresult = await client.query(
+            `SELECT u.userid, m.modulecode 
+             FROM users AS u 
+             INNER JOIN lecturer_modules AS m 
+             ON u.userid = m.userid 
+             WHERE u.userid = $1 AND m.modulecode=$2`,
+            [req.user,modulecode]
+        );
+        
     
         if(Accessresult.rowCount==0 ){
         
@@ -90,9 +97,17 @@ const GetModule= async (req,res)=>{
         
         const modulecodeprev= req.params.modulecode.toUpperCase();
 
-        const Accessresult = await client.query(`SELECT u.userid , m.modulecode FROM users AS u INNER JOIN lecturer_modules as m where u.userid =$1  `
-        ,[modulecodeprev]
-    )
+        
+        const Accessresult = await client.query(
+            `SELECT u.userid, m.modulecode 
+             FROM users AS u 
+             INNER JOIN lecturer_modules AS m 
+             ON u.userid = m.userid 
+             WHERE u.userid = $1 AND m.modulecode=$2`,
+            [req.user,modulecodeprev]
+        );
+        
+    
 
     if(Accessresult.rowCount==0 ){
         
@@ -133,11 +148,17 @@ const GetModule= async (req,res)=>{
     try {
         
         const modulecode= req.params.modulecode.toUpperCase();
-
-
-        const Accessresult = await client.query(`SELECT u.userid , m.modulecode FROM users AS u INNER JOIN lecturer_modules as m where u.userid =$1  `
-        ,[modulecode]
-    )
+    
+        const Accessresult = await client.query(
+            `SELECT u.userid, m.modulecode 
+             FROM users AS u 
+             INNER JOIN lecturer_modules AS m 
+             ON u.userid = m.userid 
+             WHERE u.userid = $1 AND m.modulecode=$2`,
+            [req.user,modulecode]
+        );
+        
+    
 
     if(Accessresult.rowCount==0 ){
         
