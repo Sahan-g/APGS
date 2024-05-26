@@ -3,7 +3,8 @@ const router = express.Router();
 const modulesController = require('../../controllers/modulesController');
 const Roles_list= require('../../config/roles_list')
 const verifyRole = require('../../middleware/verifyRoles')
-const upload= require('../../config/multer')
+const upload= require('../../config/multer');
+const { accessCheck } = require('../../middleware/accessCheck');
 
 
 router.get('/',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.getModules );
