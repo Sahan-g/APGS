@@ -61,6 +61,7 @@ const GetModule= async (req,res)=>{
     
     try {
         
+        const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
         const modulecode= req.params.modulecode.toUpperCase();
     
         const Accessresult = await client.query(
@@ -69,7 +70,7 @@ const GetModule= async (req,res)=>{
              INNER JOIN lecturer_modules AS m 
              ON u.userid = m.userid 
              WHERE u.userid = $1 AND m.modulecode=$2`,
-            [req.user,modulecode]
+            [userid,modulecode]
         );
         
     
@@ -96,7 +97,7 @@ const GetModule= async (req,res)=>{
     try {
         
         const modulecodeprev= req.params.modulecode.toUpperCase();
-
+        
         
         const Accessresult = await client.query(
             `SELECT u.userid, m.modulecode 
@@ -136,7 +137,7 @@ const GetModule= async (req,res)=>{
         return res.status(200).json("Successful")
     } catch (e) {
         console.log(e)
-        return res.status(500).json('Interanal Server Error')
+        return res.status(500).json('Internal Server Error')
         
     }
 
@@ -146,7 +147,7 @@ const GetModule= async (req,res)=>{
  const DeleteModule= async(req,res)=>{
 
     try {
-        
+        const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
         const modulecode= req.params.modulecode.toUpperCase();
     
         const Accessresult = await client.query(
@@ -155,7 +156,7 @@ const GetModule= async (req,res)=>{
              INNER JOIN lecturer_modules AS m 
              ON u.userid = m.userid 
              WHERE u.userid = $1 AND m.modulecode=$2`,
-            [req.user,modulecode]
+            [userid,modulecode]
         );
         
     
@@ -164,7 +165,7 @@ const GetModule= async (req,res)=>{
         
         return res.status(401).json({'message': 'you do  not have permission to this resource'});
     }
-        
+        console.log("Granted")
         const foundmodule= (await client.query("Select * from modules where modulecode=$1",[modulecode])).rowCount==0
         if(foundmodule) return res.status(404).json("module not found")
         
@@ -180,3 +181,16 @@ const GetModule= async (req,res)=>{
 
 
 module.exports={getModules,AddModule,GetModule,EditModule,DeleteModule}
+
+
+
+// const Accessresult = await client.query(
+//     `SELECT u.userid, m.modulecode 
+//      FROM users AS u 
+//      INNER JOIN lecturer_modules AS m 
+//      ON u.userid = m.userid 
+//      WHERE u.userid = $1 AND m.modulecode=$2`,
+//     [userid,modulecode]
+// );
+
+// const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
