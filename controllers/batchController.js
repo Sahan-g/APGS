@@ -12,14 +12,13 @@ const GetBatches=async( req,res)=>{
 
 const AddBatch=async(req,res)=>{
     const modulecode= req.params.modulecode;
-
+    console.log('hit')
     const batch= parseInt(req.body.batch);
     if(batch){
         await client.query('INSERT INTO batch (modulecode, batch) VALUES ($1, $2)', [modulecode, batch]);
         return res.status(201).json("Successful");
     }
     return res.status(400).json('batch is not valid');
-
 }
 
 
