@@ -3505,3 +3505,12 @@
 20240609	14:42:06	4b6987d2-43b8-4346-9efd-11dbb969ced9	GET	http://localhost:3000	/modules
 20240609	14:42:06	ed47ec35-846e-48db-971d-f8841f47d9ef	GET	http://localhost:3000	/user
 20240609	14:42:06	9ca7f003-207b-47f5-8a27-c63080d498b0	GET	http://localhost:3000	/modules
+20240612	16:15:36	3c4ee639-db51-4a9e-8b03-4bf8d044f4a5	POST	undefined	/auth
+20240612	16:18:36	cb42af99-3b90-4e70-88e4-f8c75754e381	POST	undefined	/auth
+20240612	16:20:13	50336f25-170f-47d2-8f12-64dd87bb9ec6	PUT	undefined	/user/password
+20240612	16:20:35	f1f80893-f921-4df5-baa9-d038a038b20b	PUT	undefined	/user/password
+20240612	16:24:40	3ac3bae5-2312-4c27-aad6-f1d9191f44de	PUT	undefined	/user/password
+20240612	16:25:05	9597c48f-aa05-4f54-a35a-71e688f401cc	PUT	undefined	/user/password
+20240612	16:25:32	47fbf4c3-a102-4a32-b68d-aeb2676b8bf2	PUT	undefined	/user/password
+20240612	16:26:18	da0fbdd2-9dfc-4778-9a9f-8420b0ecb04a	PUT	undefined	/user/password
+20240612	16:33:31	480be9c3-e009-41a3-b868-02d14d446d29	PUT	undefined	/user/password
