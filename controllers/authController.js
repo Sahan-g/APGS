@@ -19,7 +19,7 @@ const handleLogin = async (req, res) => {
     
     if (!userName || ! passWord) return res.status(400).json({ 'message': 'Username and password are required.' });
 
-    console.log(typeof(userName))
+    
 
     const foundUsers = await client.query('SELECT email, hashedpassword, isadmin FROM public.users WHERE email = $1', [userName]);
     const foundUser=foundUsers.rows[0];
