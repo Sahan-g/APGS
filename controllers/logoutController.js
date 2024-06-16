@@ -17,7 +17,7 @@ const handleLogout = async (req, res) => {
         return res.sendStatus(204);
     }
 
-    client.query('DELETE * from public.tokens where refreshtoken=$1',[refreshToken])
+    client.query('DELETE from public.tokens where refreshtoken=$1',[refreshToken])
    
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
     res.sendStatus(204);
