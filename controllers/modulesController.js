@@ -97,17 +97,20 @@ const GetModule= async (req,res)=>{
     try {
         
         const modulecodeprev= req.params.modulecode.toUpperCase();
-        
+        const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
+        const modulecode =req.modulecode;
         
         const Accessresult = await client.query(
             `SELECT u.userid, m.modulecode 
-             FROM users AS u 
-             INNER JOIN lecturer_modules AS m 
-             ON u.userid = m.userid 
-             WHERE u.userid = $1 AND m.modulecode=$2`,
-            [req.user,modulecodeprev]
+            FROM users AS u 
+            INNER JOIN lecturer_modules AS m 
+            ON u.userid = m.userid 
+            WHERE u.userid = $1 AND m.modulecode=$2`,
+            [userid,modulecode]
         );
-        
+
+
+        console.log("executed");
     
 
     if(Accessresult.rowCount==0 ){
@@ -119,7 +122,7 @@ const GetModule= async (req,res)=>{
         const foundmodule= (await client.query("Select * from modules where modulecode=$1",[modulecodeprev])).rowCount==0
         if(foundmodule) return res.status(404).json("module not found")
     
-        const{modulecode,modulename,credits} = req.body;
+        const{modulename,credits} = req.body;
     
         if(!modulecode) return res.json("Module Code required")
         if(!modulename) return res.json("Module name required")
