@@ -117,9 +117,9 @@ const AddProfilePicture=async( req,res)=>{
 
     const key = guid.v4();
     const userImage= (await client.query('SELECT profilepic  FROM users WHERE email = $1',[req.user])).rows[0]
-    if(image){
-
-        if(userImage.profilepic){
+    if(!image){
+        
+        if(userImage.profilepic!= null){
 
             const deleteParams = {
                 Bucket: process.env.BUCKET_NAME,
@@ -127,11 +127,13 @@ const AddProfilePicture=async( req,res)=>{
             };
             const deleteCommand = new DeleteObjectCommand(deleteParams);
             await s3.send(deleteCommand);
+            await client.query("UPDATE users SET profilepic=null WHERE email=$1", [user]);
 
-
-
+            return res.status(201).json('Profile Picture was removed');
         }
+        return res.status(201).json('No image to be removed');
         
+    }else{
         const params = {
             Bucket: process.env.BUCKET_NAME,
             Key: 'userimages/' + key,
@@ -146,33 +148,43 @@ const AddProfilePicture=async( req,res)=>{
         await client.query('UPDATE users SET profilepic = $1  WHERE email = $2',[key,user])
 
         return res.status(201).json('Profile Picture added')
-
     }
-    await client.query("UPDATE users SET profilepic=null WHERE email=$1", [user]);
-    return res.status(201).json('Profile Picture removed');
+        
+
+    
+   
+
 
 }
 
 
 const changePassword=async (req,res)=>{
 
+    try{
+
     const {oldPassword,newPassword}= req.body;
-    oldHash = await bcrypt.hash(oldPassword,10);
-    const result= await (await client.query(`SELECT hashedpassword FROM users WHERE user =$1`,[req.user])).rows[0]
-    if(result.hashedpassword != oldHash ){
+    
+    
+    const result=  (await client.query(`SELECT hashedpassword FROM users WHERE email =$1`,[req.user])).rows[0]
+    
+    if(!await bcrypt.compare(oldPassword,result.hashedpassword)){
         return res.status(400).json({'message':'Current Password is Wrong'})
     }
     else{
 
         if(!newPassword){
-            return res.status(400).json({'message':'passowrd cannot be empty'});
+            return res.status(400).json({'message':'Password  cannot be empty'});
         }
-        const hashnew = await bcrypt.hash(newPassword, 10);
-    
-        await client.query(`UPDATE users SET hashedpassword=$1 where email=$2`,[hash,req.user])
-        return res.status(200).json({'message':'password Chaged succeffully'})
+    const hashnew = await bcrypt.hash(newPassword, 10);
+
+    await client.query(`UPDATE users SET hashedpassword=$1 where email=$2`,[hashnew,req.user])
+        return res.status(200).json({'message':'Password Changed successfuly'})
     }
  
+    }catch(e){
+        console.log(e);
+        return res.status(500).json("Internal Server Error")
+    }
 
 
 }

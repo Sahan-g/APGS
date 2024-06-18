@@ -8,10 +8,24 @@ const getAssignments=async(req,res)=>{
 
     try{
 
-        const modulecode= req.params.modulecode;
+        const modulecode= req.params.modulecode.toUpperCase();
         const batch =req.params.batch;
         
+        const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
         
+    
+        const Accessresult = await client.query(
+            `SELECT u.userid, m.modulecode 
+             FROM users AS u 
+             INNER JOIN lecturer_modules AS m 
+             ON u.userid = m.userid 
+             WHERE u.userid = $1 AND m.modulecode=$2`,
+            [userid,modulecode.toUpperCase()]
+        );
+        if(Accessresult.rowCount==0 ){
+        
+            return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
+        }
     
     
     
@@ -22,13 +36,15 @@ const getAssignments=async(req,res)=>{
     
         
         if(result.rowCount){
+            console.log(result.rowCount)
             return res.status(200).json(result)
         }
         else{
-            return res.status(200).json("no Assignments found")
+            return res.status(200).json("no Assignments found");
         }
-    }catch{
-        return res.status(400);
+    }catch(e){
+        console.log(e)
+        return res.status(400).json('Internal Server Error');
     }
     
     
@@ -39,6 +55,21 @@ const HandleNewAssignment= async (req,res)=>{
     try{
 
         const {batch,modulecode,assignmenttitle,schemepath}= req.body;
+        const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
+        
+    
+        const Accessresult = await client.query(
+            `SELECT u.userid, m.modulecode 
+             FROM users AS u 
+             INNER JOIN lecturer_modules AS m 
+             ON u.userid = m.userid 
+             WHERE u.userid = $1 AND m.modulecode=$2`,
+            [userid,modulecode.toUpperCase()]
+        );
+        if(Accessresult.rowCount==0 ){
+        
+            return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
+        }
         
         const schemekey= guid.v4()
         const currentDate= new Date();
@@ -110,7 +141,7 @@ const Update =async (req,res)=>{
         if(title==null){
             return res.status(400).josn('assignment title cannot be null');
         }
-        await client.query('UPDATE assignments SET assignmenttitle= $1 WHERE modulecode = $2 batch=$3 assignmentid=$4',[title,modulecode,batch,id])
+        await client.query('UPDATE assignments SET assignmenttitle= $1 WHERE modulecode = $2 AND batch=$3 AND assignmentid=$4',[title,modulecode,batch,id])
         return res.status(200).json('successful');
     }
     catch (e){
@@ -125,12 +156,29 @@ const deleteAssignment=async(req,res)=>{
 try {
 
     const {id,modulecode,batch}= req.params;
+
+    const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
+        
+    
+    const Accessresult = await client.query(
+        `SELECT u.userid, m.modulecode 
+         FROM users AS u 
+         INNER JOIN lecturer_modules AS m 
+         ON u.userid = m.userid 
+         WHERE u.userid = $1 AND m.modulecode=$2`,
+        [userid,modulecode.toUpperCase()]
+    );
+    if(Accessresult.rowCount==0 ){
+    
+        return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
+    }
+
     if(!id || !modulecode || !batch){
         return res.status(400).json('All fields Are required')
     }else{
 
 
-        await client.query(`DELETE FROM assignments WHERE modulecode=$1 AND assignmentid=$2 AND batch=$3`,[modulecode,id,batch])
+        await client.query(`DELETE FROM assignments WHERE modulecode=$1 AND assignmentid=$2 AND batch=$3`,[modulecode.toUpperCase(),parseInt(id),parseInt(batch)])
         return res.status(200).json({'message':'successful'})
 
     }
@@ -161,7 +209,7 @@ const getDetails=async (req,res)=>{
         }
     
         const result= await client.query(`SELECT * FROM assignments WHERE modulecode=$1 AND batch = $2  AND assignmentid = $3 `
-        ,[modulecode,batch,id] )
+        ,[modulecode.toUpperCase(),parseInt(batch),parseInt(id)] )
         if(result.rowCount==0){
             return res.status(200).json({'message': 'no assignments found'})
         }
