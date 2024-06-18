@@ -140,3 +140,21 @@ const DeleteBatch =async(req,res)=>{
 module.exports={GetBatches,AddBatch,EditBatch,DeleteBatch}
 
 
+
+
+// CREATE TABLE IF NOT EXISTS public.batch
+// (
+//     modulecode character varying COLLATE pg_catalog."default" NOT NULL,
+//     batch integer NOT NULL,
+//     CONSTRAINT batch_pkey PRIMARY KEY (modulecode, batch)
+//         INCLUDE(modulecode, batch),
+//     CONSTRAINT batch_modulecode_fkey FOREIGN KEY (modulecode)
+//         REFERENCES public.modules (modulecode) MATCH SIMPLE
+//         ON UPDATE CASCADE
+//         ON DELETE CASCADE
+// )
+
+// TABLESPACE pg_default;
+
+// ALTER TABLE IF EXISTS public.batch
+//     OWNER to postgres;
