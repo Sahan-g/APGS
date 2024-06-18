@@ -117,9 +117,9 @@ const AddProfilePicture=async( req,res)=>{
 
     const key = guid.v4();
     const userImage= (await client.query('SELECT profilepic  FROM users WHERE email = $1',[req.user])).rows[0]
-    if(image){
-
-        if(userImage.profilepic){
+    if(!image){
+        
+        if(userImage.profilepic!= null){
 
             const deleteParams = {
                 Bucket: process.env.BUCKET_NAME,
@@ -127,11 +127,13 @@ const AddProfilePicture=async( req,res)=>{
             };
             const deleteCommand = new DeleteObjectCommand(deleteParams);
             await s3.send(deleteCommand);
+            await client.query("UPDATE users SET profilepic=null WHERE email=$1", [user]);
 
-
-
+            return res.status(201).json('Profile Picture was removed');
         }
+        return res.status(201).json('No image to be removed');
         
+    }else{
         const params = {
             Bucket: process.env.BUCKET_NAME,
             Key: 'userimages/' + key,
@@ -146,10 +148,12 @@ const AddProfilePicture=async( req,res)=>{
         await client.query('UPDATE users SET profilepic = $1  WHERE email = $2',[key,user])
 
         return res.status(201).json('Profile Picture added')
-
     }
-    await client.query("UPDATE users SET profilepic=null WHERE email=$1", [user]);
-    return res.status(201).json('Profile Picture removed');
+        
+
+    
+   
+
 
 }
 
