@@ -3744,3 +3744,6 @@
 20240619	19:27:47	91b648f9-7c47-4344-9440-24ee02f55230	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
 20240619	19:29:31	470cbccc-bac3-4ed6-b42f-8cb802ab5570	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
 20240619	19:33:38	3c7604c4-0d72-4e93-9359-b395f1d404c1	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
+20240619	21:10:31	57e98fcc-5ee7-42f5-a939-5c97a7ebeda4	GET	undefined	/refresh
+20240619	21:11:02	4bbf8c30-c77f-4022-a043-267e9c0ee86b	GET	undefined	/user/all
+20240619	21:12:37	438db012-07cf-424c-a36c-9db8bd709251	GET	undefined	/user/all
