@@ -7,10 +7,10 @@ const upload= require('../../config/multer');
 const { accessCheck } = require('../../middleware/accessCheck');
 
 
-router.get('/',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.getModules );
-router.post('/',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.AddModule)
+router.get('/',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.getModules );// working
+router.post('/',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.AddModule)// working
 //router.get('/:modulecode',verifyRole(Roles_list.RolesList.user.toString()),modulesController.GetModule)
-router.route('/view/:modulecode').get(verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.GetModule)
+router.route('/view/:modulecode').get(verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.GetModule)//working
 router.route('/edit/:modulecode').post(verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.EditModule)
 router.route('/delete/:modulecode').delete(verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.DeleteModule)
 

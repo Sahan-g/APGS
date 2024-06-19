@@ -76,7 +76,7 @@ const GetModule= async (req,res)=>{
     
         if(Accessresult.rowCount==0 ){
         
-        return res.status(401).json({'message': 'you do  not have permission to this resource'});
+        return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
         }  
             const info= (await client.query("SELECT * FROM modules WHERE modulecode =$1",[modulecode])).rows[0]
             if(info){
@@ -96,17 +96,18 @@ const GetModule= async (req,res)=>{
 
     try {
         
+        const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
         const modulecodeprev= req.params.modulecode.toUpperCase();
         const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
         const modulecode =req.modulecode;
         
         const Accessresult = await client.query(
             `SELECT u.userid, m.modulecode 
-            FROM users AS u 
-            INNER JOIN lecturer_modules AS m 
-            ON u.userid = m.userid 
-            WHERE u.userid = $1 AND m.modulecode=$2`,
-            [userid,modulecode]
+             FROM users AS u 
+             INNER JOIN lecturer_modules AS m 
+             ON u.userid = m.userid 
+             WHERE u.userid = $1 AND m.modulecode=$2`,
+            [userid,modulecodeprev]
         );
 
 
@@ -115,7 +116,7 @@ const GetModule= async (req,res)=>{
 
     if(Accessresult.rowCount==0 ){
         
-        return res.status(401).json({'message': 'you do  not have permission to this resource'});
+        return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
     }
     
     
@@ -166,7 +167,7 @@ const GetModule= async (req,res)=>{
 
     if(Accessresult.rowCount==0 ){
         
-        return res.status(401).json({'message': 'you do  not have permission to this resource'});
+        return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
     }
         console.log("Granted")
         const foundmodule= (await client.query("Select * from modules where modulecode=$1",[modulecode])).rowCount==0
