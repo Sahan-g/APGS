@@ -3720,3 +3720,13 @@
 20240619	01:47:37	0b2b60cc-2a1d-44b5-ab7f-205b031f2d76	DELETE	undefined	/assignment/ee90/50/40
 20240619	01:47:45	57185643-a7ee-4504-b561-fa7dc4fb4abf	DELETE	undefined	/assignment/ee90/50/40
 20240619	01:48:59	a3ac1bfd-e494-4360-b7ad-2660e6588bd9	DELETE	undefined	/assignment/ee90/50/40
+20240619	08:59:07	d913a00a-039f-4dc0-8209-acd9414f5ef2	POST	undefined	/register
+20240619	13:10:31	872dd2e0-f81c-4647-9956-6cb203947700	POST	undefined	/register
+20240619	18:21:59	90969890-cae3-407a-8c28-2c56e028a833	POST	undefined	/auth
+20240619	18:29:03	e4c59957-43c2-4dd4-a98e-ba6f51b17e22	POST	undefined	/answerscripts/batch/50/modulecode/ee90/assignmentid/41
+20240619	18:29:43	524cbb8d-739d-4192-8565-7e3a993c18f3	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41
+20240619	18:31:39	a2eae1e2-61ef-4312-b44c-decbeb3c8659	GET	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41
+20240619	18:32:06	072601af-f9e6-4060-9377-6d53274c911e	GET	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41
+20240619	18:32:49	87aa95d4-3666-46d9-bb6a-b51c1d5774db	GET	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41
+20240619	18:36:21	47d9efba-e599-4e38-84f6-084bd7a293e6	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/grade
+20240619	18:39:11	7fcd8a3c-8352-40f3-a780-c2e171c194fa	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/grade

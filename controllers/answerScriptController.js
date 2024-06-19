@@ -15,7 +15,7 @@ try{
 
     const batch = req.params.batch;
     const assignmentid= req.params.assignmentid;
-    const modulecode = req.params.modulecode;
+    const modulecode = req.params.modulecode.toUpperCase();
     const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
         
     
@@ -25,7 +25,7 @@ try{
              INNER JOIN lecturer_modules AS m 
              ON u.userid = m.userid 
              WHERE u.userid = $1 AND m.modulecode=$2`,
-            [userid,modulecode.toUpperCase()]
+            [userid,modulecode]
         );
     if(Accessresult.rowCount==0 ){
         
@@ -64,7 +64,7 @@ const uploadAnswerScripts=async (req,res)=>{
 
     const batch = req.params.batch;
     const assignmentid= req.params.assignmentid;
-    const modulecode = req.params.modulecode;
+    const modulecode = req.params.modulecode.toUpperCase();
     
 
     const scripts= req.files;
@@ -126,11 +126,11 @@ const uploadAnswerScripts=async (req,res)=>{
 
 
 const Grade = async (req, res) => {
-    console.log('modulecode')
+    
     try {
         const batch = req.params.batch;
         const assignmentid = req.params.assignmentid;
-        const modulecode = req.params.modulecode;
+        const modulecode = req.params.modulecode.toUpperCase();
       
 
         const result = await client.query(`SELECT studentid, fileid FROM studentanswerscripts WHERE batch = $1 AND assignmentid = $2 AND modulecode = $3`, [batch, assignmentid, modulecode]);
