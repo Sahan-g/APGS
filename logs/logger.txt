@@ -3730,3 +3730,17 @@
 20240619	18:32:49	87aa95d4-3666-46d9-bb6a-b51c1d5774db	GET	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41
 20240619	18:36:21	47d9efba-e599-4e38-84f6-084bd7a293e6	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/grade
 20240619	18:39:11	7fcd8a3c-8352-40f3-a780-c2e171c194fa	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/grade
+20240619	18:49:26	8c577ecf-c087-47a3-b155-f141984caab5	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/grade
+20240619	18:49:56	ffb01d92-e4fc-4ba6-bb73-3692c5048265	GET	undefined	/refresh
+20240619	18:50:08	65f53b4d-bff2-4681-bce0-53c6a31c98d8	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/grade
+20240619	19:23:20	7bfa1b48-4ab9-4f03-bcb4-abefb2475992	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeselected
+20240619	19:23:43	e2bf5130-3045-4100-b9de-bfa35b30c593	GET	undefined	/refresh
+20240619	19:23:56	648eef65-49a8-47b7-878d-d46cdfb145b0	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeselected
+20240619	19:24:24	cf7c73e5-5ca3-46bb-9e0c-9f8a384547e9	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
+20240619	19:25:35	39dd185e-c7dd-4236-ad32-a6c672dca720	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
+20240619	19:26:06	d207407c-c718-4536-b106-3bf3f788b8fb	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
+20240619	19:26:23	d8c4ffd7-ff5a-4339-8c73-44441792cdb3	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
+20240619	19:26:43	4d36c961-0cae-4660-af57-24a46ca6cb82	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
+20240619	19:27:47	91b648f9-7c47-4344-9440-24ee02f55230	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
+20240619	19:29:31	470cbccc-bac3-4ed6-b42f-8cb802ab5570	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
+20240619	19:33:38	3c7604c4-0d72-4e93-9359-b395f1d404c1	POST	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/gradeseleted
