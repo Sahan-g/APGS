@@ -189,8 +189,41 @@ const changePassword=async (req,res)=>{
 
 }
 
+const generatePresignedUrl = async (bucketName, key) => {
+    const command = new GetObjectCommand({ Bucket: bucketName, Key: key });
+    const url = await getSignedUrl(s3, command, { expiresIn: 3600 }); // URL valid for 1 hour
+    return url;
+  };
 
-module.exports={getuser,editUser,AddProfilePicture,changeEmail,changePassword};
+const getAllUsers=async(req,res)=>{
+    try{
+
+        const result= await client.query('SELECT userid,firstname,lastname,email,profilepic from users where email !=$1',[req.user])
+        const usersWithPresignedUrls = await Promise.all(
+            result.rows.map(async (user) => {
+          if (user.profilepic) {
+            const presignedUrl = await generatePresignedUrl(process.env.BUCKET_NAME, 'userimages/' + user.profilepic);
+            return {
+              ...user,
+              profilepic: presignedUrl
+            };
+          } else {
+            return user;
+          }
+        })
+      );
+      return res.status(200).json(usersWithPresignedUrls)
+    
+    }catch(e){
+        console.log(e);
+        return res.status(500).json('Intenal Server Error')
+    }
+
+      
+}
+
+
+module.exports={getuser,editUser,AddProfilePicture,changeEmail,changePassword,getAllUsers};
 
 
 
