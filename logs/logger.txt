@@ -3747,3 +3747,6 @@
 20240619	21:10:31	57e98fcc-5ee7-42f5-a939-5c97a7ebeda4	GET	undefined	/refresh
 20240619	21:11:02	4bbf8c30-c77f-4022-a043-267e9c0ee86b	GET	undefined	/user/all
 20240619	21:12:37	438db012-07cf-424c-a36c-9db8bd709251	GET	undefined	/user/all
+20240624	00:01:12	19157688-bf24-4216-b450-bfd3987fa0df	POST	undefined	/auth
+20240624	00:01:32	ce0485e8-86fd-4223-b54a-b704281db8d9	POST	undefined	/assignment/EE90/50
+20240624	00:01:39	e1ce94fd-60f8-4fab-9f26-7369f34234fb	POST	undefined	/assignment/EE90/50
