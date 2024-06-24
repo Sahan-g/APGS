@@ -14,5 +14,5 @@ router.post('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/gra
 router.post('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/gradeseleted',upload.none(),answerScriptController.GradeSelected)
 router.get('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/studentid/:studentid',upload.none(),answerScriptController.getGrade)
 router.delete('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/fileid/:fileid',upload.none(),answerScriptController.removeFile)
-router.delete('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/fileid/',upload.none(),answerScriptController.removeFile)
+router.delete('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/fileid/',upload.none(),answerScriptController.RemoveFiles)
 module.exports =router;

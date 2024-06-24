@@ -392,6 +392,7 @@ const RemoveFiles = async (req, res) => {
         const batch = req.params.batch;
         const assignmentid = req.params.assignmentid;
         const modulecode = req.params.modulecode.toUpperCase();
+        
 
         const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
 

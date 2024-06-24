@@ -3768,3 +3768,11 @@
 20240624	20:33:51	816bf5fc-1720-4368-939b-95c69d5a323e	DELETE	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/fileid/31d91901-90ee-4ff6-91ee-4868fbf247ab
 20240624	20:33:59	ea50de02-1ca4-49a7-ad3a-dec0defb8495	POST	undefined	/auth
 20240624	20:34:17	c6d5332c-3098-4032-a405-990525fbbd25	DELETE	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/fileid/31d91901-90ee-4ff6-91ee-4868fbf247ab
+20240625	02:01:52	a79ca59b-44ce-456c-827d-d08ff04d269e	POST	undefined	/auth
+20240625	02:02:24	b63e67cd-04a6-4a30-9511-0f70ea310d94	DELETE	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/fileid/e3a24777-b7ee-4e13-b397-b3c68aea40cd
+20240625	02:09:05	4f094108-2e9d-49c2-93d4-0000c6127d6a	DELETE	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/fileid/
+20240625	02:10:17	51d28fea-ea26-44a4-a3c2-d348d2ec00c6	DELETE	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/fileid/
+20240625	02:10:25	af0d287e-0acd-42f0-9f1c-7f4711be747d	DELETE	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/fileid/
+20240625	02:10:37	57515259-2cd6-429d-b6e8-3e2fcf4200a8	DELETE	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/fileids/
+20240625	02:10:42	f5466a42-5157-48b5-97d2-086795bdc2de	DELETE	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/fileid/
+20240625	02:11:37	f24d5057-0213-42e9-9808-46dff6b29ecb	DELETE	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/fileid/
