@@ -386,6 +386,55 @@ const removeFile = async (req, res) => {
 };
 
 
+const RemoveFiles = async (req, res) => {
+    try {
+        const fileids = req.body.fileids;
+        const batch = req.params.batch;
+        const assignmentid = req.params.assignmentid;
+        const modulecode = req.params.modulecode.toUpperCase();
+
+        const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
+
+        const Accessresult = await client.query(
+            `SELECT u.userid, m.modulecode 
+             FROM users AS u 
+             INNER JOIN lecturer_modules AS m 
+             ON u.userid = m.userid 
+             WHERE u.userid = $1 AND m.modulecode = $2`,
+            [userid, modulecode]
+        );
+        if (Accessresult.rowCount == 0) {
+            return res.status(401).json({'message': 'you do not have permission to this resource or the resource does not exist'});
+        }
+
+        if (!modulecode || !batch || !assignmentid || !fileids || fileids.length === 0) {
+            return res.sendStatus(400);
+        }
+
+        const deleteCommands = fileids.map(fileid => {
+            return {
+                Bucket: process.env.BUCKET_NAME,
+                Key: 'scripts/' + fileid
+            };
+        });
+
+        
+        for (const deleteParams of deleteCommands) {
+            const command = new DeleteObjectCommand(deleteParams);
+            await s3.send(command);
+
+            await client.query('DELETE FROM studentanswerscripts WHERE modulecode = $1 AND assignmentid = $2 AND batch = $3 AND fileid = $4', 
+                [modulecode, assignmentid, batch, deleteParams.Key.split('/')[1]]);
+        }
+
+        return res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json('Internal Server Error');
+    }
+};
+
+
 const GradeSelected =async (req,res)=>{
 
     try{
@@ -532,7 +581,9 @@ const GradeSelected =async (req,res)=>{
 }
 
 
-module.exports={getAnswerScripts, uploadAnswerScripts,Grade,getGrade,removeFile,GradeSelected}
+
+
+module.exports={getAnswerScripts, uploadAnswerScripts,Grade,getGrade,removeFile,GradeSelected,RemoveFiles}
 
 
 
