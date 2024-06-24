@@ -8,6 +8,8 @@ const upload= require('../../config/multer')
 
 router.get('/:modulecode',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),batchController.GetBatches)
 router.post('/:modulecode',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),batchController.AddBatch)
+router.put('/:modulecode',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),batchController.EditBatch)
+router.delete('/:modulecode',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),batchController.DeleteBatch)
 
 
 module.exports= router;
