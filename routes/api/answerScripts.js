@@ -11,6 +11,7 @@ router.get('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid',upl
 
 router.post('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid',upload.array('scripts'),answerScriptController.uploadAnswerScripts)
 router.post('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/grade',upload.none(),answerScriptController.Grade)
+router.post('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/gradeseleted',upload.none(),answerScriptController.GradeSelected)
 router.get('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/studentid/:studentid',upload.none(),answerScriptController.getGrade)
 router.delete('/batch/:batch/modulecode/:modulecode/assignmentid/:assignmentid/fileid/:fileid',upload.none(),answerScriptController.removeFile)
 module.exports =router;
