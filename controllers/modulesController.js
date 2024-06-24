@@ -181,6 +181,33 @@ const GetModule= async (req,res)=>{
  }
 
 
+const AddtoModule =async(req,res)=>{
+
+    const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
+    const modulecode= req.params.modulecode.toUpperCase();   
+    const usertoAdd = req.body.usertoAdd; 
+    
+    const Accessresult = await client.query(
+            `SELECT u.userid, m.modulecode 
+             FROM users AS u 
+             INNER JOIN lecturer_modules AS m 
+             ON u.userid = m.userid 
+             WHERE u.userid = $1 AND m.modulecode=$2`,
+            [userid,modulecode]
+        );
+    if(Accessresult.rowCount==0 ){
+        
+            return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
+    }
+    const newUserid= (await client.query('SELECT userid FROM users WHERE email=$1 ',[usertoAdd])).rows[0];
+    if(!newUserid) return res.status(404).json('User not Found');
+    else{
+        await client.query('INSERT INTO lecturer_modules (userid,modulecode) VALUES ($1,$2)',[parseInt(newUserid),userid]);
+        return res.status(201).json('User Added to Module')
+    }
+
+
+}
 
 module.exports={getModules,AddModule,GetModule,EditModule,DeleteModule}
 
