@@ -334,7 +334,23 @@ const removeFile = async (req, res) => {
         const fileid = req.params.fileid;
         const batch = req.params.batch;
         const assignmentid = req.params.assignmentid;
-        const modulecode = req.params.modulecode;
+        const modulecode = req.params.modulecode.toUpperCase();
+
+        const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
+        
+        
+        const Accessresult = await client.query(
+            `SELECT u.userid, m.modulecode 
+             FROM users AS u 
+             INNER JOIN lecturer_modules AS m 
+             ON u.userid = m.userid 
+             WHERE u.userid = $1 AND m.modulecode=$2`,
+            [userid,modulecode.toUpperCase()]
+        );
+        if(Accessresult.rowCount==0 ){
+        
+            return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
+        }
 
         if (!modulecode || !batch || !assignmentid || !fileid) {
             return res.sendStatus(400);

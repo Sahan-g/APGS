@@ -3750,3 +3750,8 @@
 20240624	00:01:12	19157688-bf24-4216-b450-bfd3987fa0df	POST	undefined	/auth
 20240624	00:01:32	ce0485e8-86fd-4223-b54a-b704281db8d9	POST	undefined	/assignment/EE90/50
 20240624	00:01:39	e1ce94fd-60f8-4fab-9f26-7369f34234fb	POST	undefined	/assignment/EE90/50
+20240624	00:03:43	4b746b13-e24d-4fa9-99fb-3680a0befe05	GET	undefined	/assignment/ee900/50
+20240624	00:03:51	3bf96f37-36fd-4a20-983c-38abb2658db4	GET	undefined	/assignment/ee90/50
+20240624	18:44:51	787468fb-f92a-4ded-8a20-0554ba28cc86	POST	undefined	/auth
+20240624	19:24:58	b065936a-1a7a-413b-8939-45b20da04ba8	POST	undefined	/auth
+20240624	19:36:32	d0290ce7-d933-46e9-b20a-bb6332793bed	DELETE	undefined	/answerscript/batch/50/modulecode/ee90/assignmentid/41/fileid/d48c76e0-3470-477f-8d2f-6ed25104fa93
