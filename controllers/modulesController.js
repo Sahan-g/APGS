@@ -98,8 +98,7 @@ const GetModule= async (req,res)=>{
         
         const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
         const modulecodeprev= req.params.modulecode.toUpperCase();
-        const userid = (await client.query('SELECT userid FROM users WHERE email = $1', [req.user])).rows[0].userid;
-        const modulecode =req.modulecode;
+
         
         const Accessresult = await client.query(
             `SELECT u.userid, m.modulecode 
