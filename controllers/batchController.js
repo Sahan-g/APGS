@@ -88,7 +88,7 @@ const EditBatch =async (req,res)=>{
             return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
         }
         const {newBatch} = req.body;
-        const result= (await client.query('SELECT * FROM batch from where batch= $1 AND modulecode = $2',[newBatch,modulecode])).rowCount;
+        const result= (await client.query('SELECT * FROM batch  where batch= $1 AND modulecode = $2',[newBatch,modulecode])).rowCount;
         if(result!=0){
             return res.status(409).json("Batch Already Exists");
         }
