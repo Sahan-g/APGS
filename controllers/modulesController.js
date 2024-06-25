@@ -199,9 +199,10 @@ const AddtoModule =async(req,res)=>{
         
             return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
     }
-    const newUserid= (await client.query('SELECT userid FROM users WHERE email=$1 ',[usertoAdd])).rows[0];
+    const newUserid= (await client.query('SELECT userid FROM users WHERE email=$1 ',[usertoAdd])).rows[0].userid;
     if(!newUserid) return res.status(404).json('User not Found');
     else{
+      
         await client.query('INSERT INTO lecturer_modules (userid,modulecode) VALUES ($1,$2)',[parseInt(newUserid),modulecode]);
         return res.status(201).json('User Added to Module')
     }
