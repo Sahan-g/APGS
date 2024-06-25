@@ -209,7 +209,7 @@ const AddtoModule =async(req,res)=>{
 
 }
 
-module.exports={getModules,AddModule,GetModule,EditModule,DeleteModule}
+module.exports={getModules,AddModule,GetModule,EditModule,DeleteModule,AddtoModule}
 
 
 
