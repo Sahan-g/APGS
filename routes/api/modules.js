@@ -11,6 +11,7 @@ router.get('/',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),mo
 router.post('/',verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.AddModule)// working
 //router.get('/:modulecode',verifyRole(Roles_list.RolesList.user.toString()),modulesController.GetModule)
 router.route('/view/:modulecode').get(verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.GetModule)//working
+router.route('/view/:modulecode/user').post(verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.AddtoModule)
 router.route('/edit/:modulecode').post(verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.EditModule)
 router.route('/delete/:modulecode').delete(verifyRole(Roles_list.RolesList.user.toString()),upload.none(),modulesController.DeleteModule)
 
