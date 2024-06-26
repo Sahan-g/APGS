@@ -125,7 +125,8 @@ const DeleteBatch =async(req,res)=>{
             return res.status(401).json({'message': 'you do  not have permission to this resource or the resource does not exist'});
         }
         const {batch} = req.body;
-        await client.query('DELETE from batch WHERE modulecode=$1,batch=$2',[modulecode,ParseInt(batch)])
+        console.log(batch)
+        await client.query('DELETE from batch WHERE modulecode=$1 AND batch=$2',[modulecode,parseInt(batch)])
         return res.status(200).json('successful');
 
     }
