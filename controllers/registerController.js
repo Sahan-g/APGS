@@ -2,11 +2,15 @@ const bcrypt = require('bcrypt');
 const user = require('../model/user.js');
 const client = require('../databasepg.js');
 
-
-client.connect()
+try{
+     
+    client.connect()
     .then(() => console.log('Connected to PostgreSQL'))
     .catch(err => console.error('Connection error', err.stack));
-
+}catch(e){
+    console.log('Database connection lost reconecting ... ')
+}
+    
 const handleNewUser = async (req, res) => {
     try {
         const {
