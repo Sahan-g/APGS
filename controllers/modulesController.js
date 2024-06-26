@@ -206,8 +206,8 @@ const AddtoModule =async(req,res)=>{
         
         else{
             
-        const existingUser= (await client.query('SELECT  userid FROM lecturer_modules where modulecode = $1 ',[modulecode])).rowCount
-            if(existingUser != 1){
+        const existingUser= (await client.query('SELECT  userid FROM lecturer_modules where modulecode = $1 ',[modulecode])).userid
+            if(parseInt(existingUser) == newUserid ){
                 return res.status(200).json('User already exists');
             }
         await client.query('INSERT INTO lecturer_modules (userid,modulecode) VALUES ($1,$2)',[parseInt(newUserid),modulecode]);
