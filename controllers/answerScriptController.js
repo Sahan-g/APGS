@@ -192,7 +192,7 @@ const Grade = async (req, res) => {
             'studentAnswers': scripts
         });
 
-        const gradedResult = await axios.post('http://127.0.0.1:5000/grade', body,{
+        const gradedResult = await axios.post('http://35.198.221.3:5000/grade', body,{
             headers: {
               'Content-Type': 'application/json'
             }
@@ -504,7 +504,7 @@ const GradeSelected =async (req,res)=>{
         'studentAnswers': scripts
     });
 
-    const gradedResult = await axios.post('http://127.0.0.1:5000/grade', body,{
+    const gradedResult = await axios.post('http://35.198.221.3:5000/grade', body,{
         headers: {
           'Content-Type': 'application/json'
         }
